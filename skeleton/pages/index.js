@@ -18,11 +18,4 @@ export default function Home({ blogs }) {
   );
 }
 
-export async function getStaticProps() {
-  const prisma = new PrismaClient();
-  const blogs = await prisma.blog.findMany();
 
-  return {
-    props: { blogs }
-  };
-}
