@@ -10,13 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id                Int           @id @default(autoincrement())
-  email             String        @unique
-  password          String
-  avatar            String?
-  experience_points Int
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  experience_points Int @default(0)
   bingo_board       Bingo_Board[]
+  
+  //Default template attributes, can delete later
+  posts Post[]
+  Blog  Blog[]
 }
 
 model Bingo_Board {
@@ -37,14 +41,34 @@ model Bingo_Square {
   position     Int
   exercise     Exercise    @relation(fields: [exerciseId], references: [id])
   exerciseId   Int
+  isCompleted  Boolean    
+  inProgress   Boolean  //A square cannot be completed and in progress at the same time.
 }
 
 model Exercise {
   id           Int            @id @default(autoincrement())
   title        String
   description  String
-  isCompleted  Boolean
+  difficulty   Int
   bingo_square Bingo_Square[]
-
   @@unique([title, description])
+}
+
+//Leftover models for default template
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Blog {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
