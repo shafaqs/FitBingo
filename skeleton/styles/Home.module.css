@@ -1,26 +1,30 @@
-.description {
+/* * /styles for the Bingo board */
+.container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 50px;
 }
 
-.main {
+.board {
+  border-collapse: collapse;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.square {
+  border: 1px solid #d1d1d1;
+  background-color: #f6f6f6;
+  padding: 10px;
   text-align: center;
+  width: 100px;
+  height: 100px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.subtitle {
-  padding-top: 10px;
-  padding-bottom: 30px;
-}
-
-.dbContainer {
-  margin: 30px;
-}
-
-.dbContainer h3 {
-  margin: 30px;
-}
-
-.title {
-  font-size: 50px;
+.square:hover {
+  background-color: bisque;
+  cursor: pointer;
 }
