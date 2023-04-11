@@ -46,9 +46,10 @@ model Bingo_Square {
 
 model Exercise {
   id           Int            @id @default(autoincrement())
+  category     String
   title        String
   description  String
-  difficulty   Int
+  difficulty   String
   bingo_square Bingo_Square[]
   @@unique([title, description])
 }

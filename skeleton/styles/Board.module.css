@@ -1,8 +1,10 @@
 /* Styling for the bingo board */
 
 .board {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 50vw; /* adjust this to be the desired percentage */
+  margin: 0 auto;
+  padding: 20px;
 }
