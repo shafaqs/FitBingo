@@ -12,29 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 
+import BingoBoard from '@/components/BingoBoard';
 
+const inter = Inter({ subsets: ['latin'] });
 
 export default function BingoBoard({ blogs }) {
-  const router = useRouter();
-  const { difficulty } = router.query;
   return (
+    <div>
+      <Board></Board>
 
-    <Grid container spacing={0}>
-    {/* ------------------------- row 1 ------------------------- */}
-    <Grid item xs={12} lg={12}>
-      <Head>
-        <title>BingoFit</title>
-      </Head>
-      <Card>
-        <CardContent>
-          <Typography variant="h1">Play FitBingo</Typography>
-          <Typography variant="body1">
-            Difficulty Level:  {difficulty}!
-          </Typography>
-          <Board></Board>
-        </CardContent>
-      </Card>
-    </Grid>
-    </Grid>
+    </div>
   );
 }
