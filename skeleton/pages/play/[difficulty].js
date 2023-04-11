@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Board from '@/modules/bingo';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
@@ -6,16 +6,11 @@ import { PrismaClient } from '@prisma/client';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home({ blogs }) {
+export default function BingoBoard({ blogs }) {
   return (
     <div>
-      <Head>
-        <title>BingoFit</title>
-      </Head>
-      <h1>Welcome to BingoFit!</h1>
-      <p>Play bingo and get fit.</p>
+      <Board></Board>
+
     </div>
   );
 }
-
-
