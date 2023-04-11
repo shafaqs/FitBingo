@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import BingoBoard from '@/components/BingoBoard';
+//import BingoBoard from '@/components/BingoBoard';
 
 const inter = Inter({ subsets: ['latin'] });
 
