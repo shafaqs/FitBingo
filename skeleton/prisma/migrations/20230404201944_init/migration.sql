@@ -2,27 +2,35 @@
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "email" TEXT NOT NULL,
-    "name" TEXT
+    "password" TEXT NOT NULL,
+    "avatar" TEXT,
+    "experience_points" INTEGER,
 );
 
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE "Bingo_Board" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" TEXT NOT NULL,
-    "content" TEXT,
-    "published" BOOLEAN NOT NULL DEFAULT false,
-    "authorId" INTEGER NOT NULL,
-    CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "squares" INTEGER NOT NULL,
+    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
+    "difficultyLevel" INTEGER NOT NULL,
+    CONSTRAINT "Bingo_Board_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "Blog" (
+CREATE TABLE "Bingo_Square" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "position" INTEGER NOT NULL,
+    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
+    CONSTRAINT "Bingo_Square_bingoBoardId_fkey" FOREIGN KEY ("bingoBoardId") REFERENCES "Bingo_Board" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Exercise_exerciseId_fkey" FOREIGN KEY ("exerciseId") REFERENCES "Exercise" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Exercise" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
-    "content" TEXT,
-    "published" BOOLEAN NOT NULL DEFAULT false,
-    "authorId" INTEGER NOT NULL,
-    CONSTRAINT "Blog_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "description" TEXT,
+    "authorId" INTEGER NOT NULL
 );
 
 -- CreateIndex
