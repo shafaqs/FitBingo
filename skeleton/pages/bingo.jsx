@@ -81,7 +81,10 @@ export default function Bingo() {
     const availableSquares = flattenedBoard.filter(
       (square, index) =>
         !square.clicked &&
-        !square.highlighted &&
+        // Exclude the previously highlighted square
+        (selectedSquare
+          ? !(square.rowIndex === selectedSquare.rowIndex && square.columnIndex === selectedSquare.columnIndex)
+          : true) &&
         index !==
         BOARD_SIZE * Math.floor(BOARD_SIZE / 2) + Math.floor(BOARD_SIZE / 2)
     );
@@ -93,7 +96,6 @@ export default function Bingo() {
 
     const randomIndex = Math.floor(Math.random() * availableSquares.length);
     const randomSquare = availableSquares[randomIndex];
-    randomSquare.highlighted = true;
 
     // Remove the completed square from the availableSquares array
     availableSquares.splice(randomIndex, 1);
@@ -112,6 +114,9 @@ export default function Bingo() {
       );
       return newBoard;
     });
+
+    // Add this line to keep track of the previously highlighted square
+    setSelectedSquare(randomSquare);
   };
 
 
@@ -143,7 +148,6 @@ export default function Bingo() {
         newBoard[selectedSquare.rowIndex] &&
         newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex]
       ) {
-        newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex].highlighted = false;
         newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex].clicked = true;
       }
 
@@ -152,6 +156,7 @@ export default function Bingo() {
 
     setSelectedSquare(null);
   };
+
 
   const handleChooseAnother = () => {
     setModalVisible(false);
