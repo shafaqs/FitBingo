@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import BaseCard from "../baseCard/BaseCard";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const SalesOverview = () => {
+const ExercisesXPEarnedStats = () => {
   const optionssalesoverview = {
     grid: {
       show: true,
@@ -95,16 +95,16 @@ const SalesOverview = () => {
   };
   const seriessalesoverview = [
     {
-      name: "Ample Admin",
+      name: "Total Exercises",
       data: [355, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
     },
     {
-      name: "Pixel Admin",
+      name: "XP Earned",
       data: [280, 250, 325, 215, 250, 310, 280, 250, 325, 215, 250, 310],
     },
   ];
   return (
-    <BaseCard title="Sales Overview">
+    <BaseCard title="Exercises - XP Earned Stats">
       <Chart
         options={optionssalesoverview}
         series={seriessalesoverview}
@@ -115,4 +115,4 @@ const SalesOverview = () => {
   );
 };
 
-export default SalesOverview;
+export default ExercisesXPEarnedStats;
