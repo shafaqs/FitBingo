@@ -8,6 +8,9 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import ExercisesXPEarnedStats from "@/src/components/dashboard/ExercisesXPEarnedStats";
+import ExercisesPerDayStats from "@/src/components/dashboard/ExercisesPerDayStats";
+import DailyActivity from "@/src/components/dashboard/DailyActivity";
 
 export default function Stats() {
   return (
@@ -15,19 +18,22 @@ export default function Stats() {
       <Head>
         <title>BingoFit</title>
       </Head>
-      {/* ------------------------- row 1 ------------------------- */}
-      <Grid item xs={12} lg={12}>
-        <Card>
+        {/* <Card>
           <CardContent>
-            <Typography variant="h1">Statistics Page</Typography>
-            <Typography variant="body1">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
+            <Typography variant="h1">Statistics Page</Typography> */}
+            <Grid item xs={12} lg={12}>
+              <ExercisesXPEarnedStats />
+            </Grid>
+            {/* ------------------------- row 1 ------------------------- */}
+            <Grid item xs={8} lg={8}>
+              <ExercisesPerDayStats />
+            </Grid>
+            <Grid item xs={4} lg={4}>
+              <DailyActivity />
+            </Grid>
+          {/* </CardContent>
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

@@ -10,28 +10,38 @@ import BaseCard from "../baseCard/BaseCard";
 
 const activities = [
   {
-    time: "09.50",
+    day: "Mon",
     color: "success.main",
     text: "Meeting with John",
   },
   {
-    time: "09.46",
+    day: "Tue",
     color: "secondary.main",
     text: "Payment received from John Doe of $385.90",
   },
   {
-    time: "09.47",
+    day: "Wed",
     color: "primary.main",
     text: "Project Meeting",
   },
   {
-    time: "09.48",
+    day: "Thu",
     color: "warning.main",
     text: "New Sale recorded #ML-3467",
   },
   {
-    time: "09.49",
+    day: "Fri",
     color: "error.main",
+    text: "Payment was made of $64.95 to Michael Anderson",
+  },
+  {
+    day: "Sat",
+    color: "success.main",
+    text: "Payment was made of $64.95 to Michael Anderson",
+  },
+  {
+    day: "Sun",
+    color: "secondary.main",
     text: "Payment was made of $64.95 to Michael Anderson",
   },
 ];
@@ -45,7 +55,7 @@ const DailyActivity = () => {
         }}
       >
         {activities.map((activity) => (
-          <TimelineItem key={activity.time}>
+          <TimelineItem key={activity.day}>
             <TimelineOppositeContent
               sx={{
                 fontSize: "12px",
@@ -53,7 +63,7 @@ const DailyActivity = () => {
                 flex: "0",
               }}
             >
-              {activity.time}
+              {activity.day}
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot
