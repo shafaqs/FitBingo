@@ -8,6 +8,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import BaseCard from "@/src/components/baseCard/BaseCard";
 
 export default function Progress() {
   return (
@@ -17,16 +18,14 @@ export default function Progress() {
       </Head>
       {/* ------------------------- row 1 ------------------------- */}
       <Grid item xs={12} lg={12}>
-        <Card>
-          <CardContent>
-            <Typography variant="h1">Progress Page</Typography>
-            <Typography variant="body1">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-        </Card>
+        <BaseCard title="Current Bingo Board">
+        
+        </BaseCard>
+      </Grid>
+      <Grid item xs={12} lg={12}>
+        <BaseCard title="Completed Bingo Boards">
+        
+        </BaseCard>
       </Grid>
     </Grid>
   );
