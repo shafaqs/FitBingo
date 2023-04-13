@@ -9,7 +9,8 @@ export async function getRandomExercises(numExercises) {
     return data.exercises;
   } catch (error) {
     console.error(error);
-    throw new Error('Error fetching exercises');
+    // Return an empty array in case of an error
+    return [];
   }
 }
 
@@ -20,4 +21,5 @@ export function shuffleArray(array) {
   }
   return array;
 }
+
 
