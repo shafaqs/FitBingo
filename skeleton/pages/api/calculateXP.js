@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
 
 export default async function calculateXP(userID) {
+    const prisma = new PrismaClient();
+
     const pointsPerSquare = 100;
 
     //fetch data for the user
@@ -17,5 +17,8 @@ export default async function calculateXP(userID) {
     //count the number of completed squares
     const completedSquares = user.Bingo_Square.length;
     const totalXP = completedSquares * pointsPerSquare;
-    return totalXP;
+
+    return {
+        props: { totalXP }
+    }
 }
