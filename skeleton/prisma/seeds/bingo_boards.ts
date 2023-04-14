@@ -5,7 +5,7 @@ const bingo_boards: Bingo_Board[] = [
     id: 1,
     userId: 1,
     squares: 25,
-    isCompleted: false,
+    isCompleted: true,
     difficultyLevel: 0
   },
   {
