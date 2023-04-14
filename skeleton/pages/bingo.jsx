@@ -4,7 +4,7 @@ import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
 
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
-import { checkBingo } from '/modules/bingoHelpers';
+import { checkBingo } from '@/modules/bingoHelpers';
 
 import styles from '../styles/Home.module.css';
 
@@ -40,6 +40,38 @@ async function generateBingoBoard() {
     return null;
   }
 }
+// async function generateBingoBoard() {
+//   const numExercises = BOARD_SIZE * BOARD_SIZE - 1;
+//   try {
+//     let exercises = await getRandomExercises(numExercises) || [];
+//     const shuffledExercises = shuffleArray(exercises);
+//     const rows = [];
+
+//     for (let i = 0; i < BOARD_SIZE; i++) {
+//       const row = [];
+//       for (let j = 0; j < BOARD_SIZE; j++) {
+//         const exerciseData = shuffledExercises.pop() || { name: `Exercise ${i * BOARD_SIZE + j + 1}`, description: 'Exercise description goes here...', type: 'Type' };
+//         const exercise = {
+//           ...(i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2)
+//             ? { name: 'Fit Bingo', description: '', type: '' }
+//             : exerciseData),
+//           rowIndex: i,
+//           columnIndex: j,
+//           clicked: i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2),
+//           highlighted: false,
+//         };
+//         row.push(exercise);
+//       }
+//       rows.push(row);
+//     }
+
+//     return rows;
+//   } catch (error) {
+//     console.error('Error fetching exercises', error);
+//     return null;
+//   }
+// }
+
 function getDefaultBoard() {
   return Array.from({ length: BOARD_SIZE }, (_, rowIndex) =>
     Array.from({ length: BOARD_SIZE }, (_, columnIndex) => {
@@ -49,16 +81,20 @@ function getDefaultBoard() {
             ? 'Free space'
             : `Exercise ${rowIndex * BOARD_SIZE + columnIndex + 1}`,
         clicked: rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2),
+        rowIndex,
+        columnIndex,
       };
     })
   );
 }
 
 
+
 export default function Bingo() {
   const [board, setBoard] = useState(null);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [showPlayAgain, setShowPlayAgain] = useState(false);
 
   useEffect(() => {
     async function updateBoard() {
@@ -71,34 +107,51 @@ export default function Bingo() {
     }
     updateBoard();
   }, []);
+  useEffect(() => {
+    if (board && checkBingo(board)) {
+      setShowPlayAgain(true);
+    }
+  }, [board]);
 
+
+
+  function allExercisesCompleted(board) {
+    const flattenedBoard = board.flat();
+    return flattenedBoard.every(
+      (square, index) =>
+        square.clicked ||
+        index === BOARD_SIZE * Math.floor(BOARD_SIZE / 2) + Math.floor(BOARD_SIZE / 2) ||
+        square.name === 'Free space'
+    );
+  }
+  const resetBoard = async () => {
+    const newBoard = await generateBingoBoard();
+    setBoard(newBoard);
+    setShowPlayAgain(false);
+  };
 
 
   const playBingo = () => {
     if (!board) return;
 
+    if (allExercisesCompleted(board)) {
+      toast("No more available squares!", { className: "no-squares-toast" });
+      return;
+    }
+
     const flattenedBoard = board.flat();
     const availableSquares = flattenedBoard.filter(
       (square, index) =>
         !square.clicked &&
-        // Exclude the previously highlighted square
-        (selectedSquare
-          ? !(square.rowIndex === selectedSquare.rowIndex && square.columnIndex === selectedSquare.columnIndex)
-          : true) &&
-        index !==
-        BOARD_SIZE * Math.floor(BOARD_SIZE / 2) + Math.floor(BOARD_SIZE / 2)
+        index !== BOARD_SIZE * Math.floor(BOARD_SIZE / 2) + Math.floor(BOARD_SIZE / 2)
     );
 
-    if (availableSquares.length === 0) {
-      alert("All exercises have been completed!");
-      return;
-    }
+    console.log("Available squares:", availableSquares);
 
     const randomIndex = Math.floor(Math.random() * availableSquares.length);
     const randomSquare = availableSquares[randomIndex];
 
-    // Remove the completed square from the availableSquares array
-    availableSquares.splice(randomIndex, 1);
+    console.log("Random square:", randomSquare);
 
     setBoard((prevBoard) => {
       const newBoard = prevBoard.map((row, rowIndex) =>
@@ -115,9 +168,9 @@ export default function Bingo() {
       return newBoard;
     });
 
-    // Add this line to keep track of the previously highlighted square
     setSelectedSquare(randomSquare);
   };
+
 
 
 
@@ -129,12 +182,6 @@ export default function Bingo() {
     setSelectedSquare(clickedSquare);
     setModalVisible(true);
 
-    // Clear the highlighted state
-    setBoard(prevBoard => {
-      const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
-      newBoard[rowIndex][columnIndex].highlighted = false;
-      return newBoard;
-    });
   };
 
   const handleCompleted = () => {
@@ -149,6 +196,7 @@ export default function Bingo() {
         newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex]
       ) {
         newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex].clicked = true;
+        newBoard[selectedSquare.rowIndex][selectedSquare.columnIndex].completed = true;
       }
 
       return newBoard;
@@ -156,6 +204,8 @@ export default function Bingo() {
 
     setSelectedSquare(null);
   };
+
+
 
 
   const handleChooseAnother = () => {
@@ -171,19 +221,36 @@ export default function Bingo() {
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
+    console.log("Rendering square:", column);
 
     return (
       <td
         key={columnIndex}
-        className={`${styles.square} ${column.clicked ? styles.checked : ''} ${column.highlighted ? styles.highlighted : ''}`}
+        className={`${styles.square} ${column.highlighted ? styles.highlighted : ''} ${column.completed ? styles.completed : ''}`}
         onClick={() => handleExerciseClick(rowIndex, columnIndex)}
       >
-        {column.name}
+        {column.completed ? '✓' : column.name}
       </td>
-
     );
-
   };
+  // const renderSquare = (column, columnIndex, rowIndex) => {
+  //   console.log("Rendering square:", column);
+
+  //   return (
+  //     <td
+  //       key={columnIndex}
+  //       className={`${styles.square} ${column.highlighted ? styles.highlighted : ''} ${column.completed ? styles.completed : ''}`}
+  //       onClick={() => handleExerciseClick(rowIndex, columnIndex)}
+  //     >
+  //       {column.completed ? '✓' : `${column.name} (${column.type})`}
+  //     </td>
+  //   );
+  // };
+
+
+
+
+
 
   const renderRow = (row, rowIndex) => {
     return (
@@ -212,14 +279,20 @@ export default function Bingo() {
             {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
           </tbody>
         </table>
-        <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
-          Play Bingo
-        </CustomButton>
+        {!showPlayAgain && (
+          <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
+            Play Bingo
+          </CustomButton>
+        )}
 
 
-
+        {/* Add the "Play Again" button */}
+        {showPlayAgain && (
+          <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
+            Play Again
+          </CustomButton>
+        )}
       </div>
-
 
       {selectedSquare && (
         <Modal visible={modalVisible}>
