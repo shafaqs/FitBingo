@@ -175,7 +175,42 @@ const exercises: Exercise[] = [
     "description": "Lying down on a mat, bend your knees, and lock your feet against overhead resistance, such as the foot of a bed. With both hands behind your head, pull yourself towards your knees. Try for 5 sets of 10 reps.",
     "category": "Strength",
     "duration": 15
-  }
+  },
+  {
+    "id": 26,
+    "title": "Close Grip Pike Push-up",
+    "description": "Bend down and put your hands on the floor at shoulder width. From here, get onto your tippy-toes and try to create a V shape by bringing your hands and feet as close together as possible. Keep bringing your hands closer together until you do them with your hands touching.",
+    "category": "Calisthetics",
+    "duration": 10
+  },
+  {
+    "id": 27,
+    "title": "Handstand Push-ups",
+    "description": "Face a wall and stand ~6 inches away from it. Kneel down on your hands and knees and bend one knee up towards your head while the other is extended straight behind you. From here, kick off hard with the bent knee, which should help you propel both legs up into the air and towards the wall. Gently find the wall with the heels of your feet and extend your entire body.",
+    "category": "Calisthetics",
+    "duration": 15
+  },
+  {
+    "id": 28,
+    "title": "Close Stance Squats",
+    "description": "Mimicking the stance of a traditional squat, point your heels together, and point your towes outwards at a 45 degree angle. Squat down as low as you can. Try for 4 sets of 10-12 reps.",
+    "category": "Calisthetics",
+    "duration": 20
+  },
+  {
+    "id": 29,
+    "title": "Box Jump",
+    "description": "The box jump is another variation of the explosive squat. Crouch down, forcefully extend at the hips and jump onto a sturdy box or a surface of increased height in a semi squat position.",
+    "category": "Cardio",
+    "duration": 15
+  },
+  {
+    "id": 30,
+    "title": "Plank",
+    "description": "The plank is one of the few exercises that actually requires activation of almost every major muscle group in the body. Squeeze every part in your body! Try to stay in position for 3 sets of 1 minute each.",
+    "category": "Strength",
+    "duration": 5
+  },
 ];
 
 export default exercises;
