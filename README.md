@@ -18,3 +18,16 @@ DATABASE_URL="file:./dev.db"
 This is needed in order for prisma to work on your local.
 
 Should you decide to use an upload database (So this will be a DB hosted only and shared between members) Please read the prisma docs and add accordingly
+
+
+To launch prisma studio:
+```
+cd skeleton
+npx prisma studio
+```
+
+To seed database:
+```
+cd skeleton
+npx prisma db seed
+```
