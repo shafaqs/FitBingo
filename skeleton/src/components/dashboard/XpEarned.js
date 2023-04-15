@@ -3,8 +3,23 @@ import BaseCard from "../baseCard/BaseCard";
 import { Grid } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
+//import calculateXP from "@/pages/api/calculateXP";
+import { useEffect, useState } from "react";
 
 const XpEarned = () => {
+  const [experiencePoints, setExperiencePoints] = useState(0);
+  const userID = 1; //using userID 1 as an example
+
+  useEffect(() => {
+    async function calculateXP() {
+      const response = await fetch(`/api/calculateXP?userId=${userID}`);
+      const {experiencePoints} = await response.json();
+      setExperiencePoints(experiencePoints);
+    };
+
+    calculateXP();
+  }, [userID]);
+
   return (
     <BaseCard>
       <Grid container spacing={0}>
@@ -24,7 +39,7 @@ const XpEarned = () => {
           </div>
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h1 style={{ margin: 0 }}>1115</h1>
+          <h1 style={{ margin: 0 }}> {experiencePoints} </h1>
           <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>XP Earned</p>
         </Grid>
       </Grid>
