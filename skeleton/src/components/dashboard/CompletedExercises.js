@@ -3,8 +3,20 @@ import BaseCard from "../baseCard/BaseCard";
 import { Grid } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
+import { useState, useEffect } from "react";
 
 const CompletedExercises = () => {
+  const [completedExercises, setCompletedExercises] = useState(0);
+  const userID = 1;
+  useEffect(() => {
+    async function fetchCompletedExercises() {
+      const response = await fetch(`/api/CalcNoOfCompletedExer?userId=${userID}`);
+      const { completedExercises } = await response.json();
+      setCompletedExercises(completedExercises);
+    }
+
+    fetchCompletedExercises();
+  }, [userID]);
   return (
     <BaseCard>
       <Grid container spacing={0}>
@@ -24,7 +36,7 @@ const CompletedExercises = () => {
           </div>
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h1 style={{ margin: 0 }}>100</h1>
+          <h1 style={{ margin: 0 }}>{completedExercises}</h1>
           <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>Completed Exercises</p>
         </Grid>
       </Grid>
