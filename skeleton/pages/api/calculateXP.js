@@ -14,8 +14,6 @@ export default async function calculateXP(req, res) {
         where: { isCompleted: true, bingoBoard: { userId: parseInt(userId)  } },
       });
 
-    console.log('completed squares, ', completedSquares)
-
     const pointsPerSquare = 100;
 
     const totalXP = completedSquares * pointsPerSquare;

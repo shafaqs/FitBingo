@@ -3,7 +3,6 @@ import BaseCard from "../baseCard/BaseCard";
 import { Grid } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
-//import calculateXP from "@/pages/api/calculateXP";
 import { useEffect, useState } from "react";
 
 const XpEarned = () => {
