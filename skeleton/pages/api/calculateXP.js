@@ -1,24 +1,25 @@
-const { PrismaClient } = require('@prisma/client');
+//import { useState, useEffect } from 'react';
+import { PrismaClient } from '@prisma/client';
 
-export default async function calculateXP(userID) {
-    const prisma = new PrismaClient();
+const prisma = new PrismaClient();
+
+export default async function calculateXP(req, res) {
+    if (req.method !== 'GET') {
+        return res.status(405)
+    }
+
+    const { userId } = req.query;
+
+    const completedSquares = await prisma.bingo_Square.count({
+        where: { isCompleted: true, bingoBoard: { userId: parseInt(userId)  } },
+      });
+
+    console.log('completed squares, ', completedSquares)
 
     const pointsPerSquare = 100;
 
-    //fetch data for the user
-    const user = await prisma.user.findUser({
-        where: { id: userID },
-        include: {
-            Bingo_Square: {
-                where: {isComplete: true },
-            },
-        },
-    });
-    //count the number of completed squares
-    const completedSquares = user.Bingo_Square.length;
     const totalXP = completedSquares * pointsPerSquare;
 
-    return {
-        props: { totalXP }
-    }
+    res.status(200).json({ experiencePoints: totalXP });
+
 }
