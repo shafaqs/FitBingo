@@ -95,6 +95,7 @@ export default function Bingo() {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayAgain, setShowPlayAgain] = useState(false);
+  const [exercise, setExercise] = useState('');
 
   useEffect(() => {
     async function updateBoard() {
@@ -171,11 +172,19 @@ export default function Bingo() {
     setSelectedSquare(randomSquare);
   };
 
-
-
+  //Delete later
+  const category = "Cardio"
+  //Requests API to fetch a random exercise of the desired category
+  const handleButtonClick = async () => {
+    const response = await fetch(`/api/exercises/${category}`); //Change category to anything
+    const data = await response.json();
+    setExercise(data);
+  };
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
+    handleButtonClick();
+
     const clickedSquare = board[rowIndex][columnIndex];
     if (!clickedSquare.highlighted) return;
 
@@ -297,7 +306,11 @@ export default function Bingo() {
       {selectedSquare && (
         <Modal visible={modalVisible}>
           <h2>{selectedSquare.name}</h2>
-          <p>Exercise description goes here...</p>
+          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
+          Exercise Category: {exercise[0]} <br />
+          Title: {exercise[1]} <br />
+          Instructions: {exercise[2]} <br />
+          Estimated Time: {exercise[3]} minutes
           <div>
             <CustomButton onClick={handleCompleted}>Completed</CustomButton>
             <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>

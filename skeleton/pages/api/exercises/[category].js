@@ -9,13 +9,13 @@ export default async function handler(req, res) {
     // Fetch all cardio exercises from the database
     const result = await prisma.exercise.findMany({
       where: {
-        category: category,
+        category: category
       },
     });
 
     // Return a random exercise from the list
     const exercise = result[Math.floor(Math.random() * result.length)];
-    res.status(200).json(exercise);
+    res.status(200).json([exercise.category, exercise.title, exercise.description, exercise.duration]);
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
