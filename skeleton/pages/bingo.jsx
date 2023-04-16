@@ -10,11 +10,15 @@ import styles from '../styles/Home.module.css';
 
 const BOARD_SIZE = 5;
 
+//Hard coded for now - Can refactor to fetch all categories from database instead.
+const exerciseCategories = ["Cardio", "Strength", "Calisthetics"];
+
 async function generateBingoBoard() {
   const numExercises = BOARD_SIZE * BOARD_SIZE - 1;
   try {
     let exercises = await getRandomExercises(numExercises) || [];
     const shuffledExercises = shuffleArray(exercises);
+
     const rows = [];
 
     for (let i = 0; i < BOARD_SIZE; i++) {
@@ -23,7 +27,7 @@ async function generateBingoBoard() {
         const exercise = {
           ...(i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2)
             ? { name: 'Fit Bingo' }
-            : shuffledExercises.pop() || { name: `Exercise ${i * BOARD_SIZE + j + 1}` }),
+            : shuffledExercises.pop() || { name: `${exerciseCategories[Math.floor(Math.random() * exerciseCategories.length)]}` }),
           rowIndex: i,
           columnIndex: j,
           clicked: i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2),
@@ -79,7 +83,7 @@ function getDefaultBoard() {
         name:
           rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2)
             ? 'Free space'
-            : `Exercise ${rowIndex * BOARD_SIZE + columnIndex + 1}`,
+            : `${exerciseCategories[Math.floor(Math.random() * exerciseCategories.length)]}`,
         clicked: rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2),
         rowIndex,
         columnIndex,
@@ -114,6 +118,7 @@ export default function Bingo() {
     }
   }, [board]);
 
+  
 
 
   function allExercisesCompleted(board) {
@@ -172,17 +177,19 @@ export default function Bingo() {
     setSelectedSquare(randomSquare);
   };
 
-  //Delete later
-  const category = "Cardio"
-  //Requests API to fetch a random exercise of the desired category
+  //Requests API to fetch a random exercise displayed on the square
   const handleButtonClick = async () => {
-    const response = await fetch(`/api/exercises/${category}`); //Change category to anything
+    if (!selectedSquare) return;
+     
+    const response = await fetch(`/api/exercises/${selectedSquare.name}`);
     const data = await response.json();
     setExercise(data);
   };
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
+    
+
     handleButtonClick();
 
     const clickedSquare = board[rowIndex][columnIndex];
