@@ -3,8 +3,20 @@ import BaseCard from "../baseCard/BaseCard";
 import { Grid } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
+import { useState, useEffect } from "react";
 
-const CompletedBingos = () => {
+const CompletedBingos = (props) => {
+  const [completedBingos, setCompletedBingos] = useState(0);
+  const userID = props.user.id;
+  useEffect(() => {
+    async function fetchCompletedBingos() {
+      const response = await fetch(`/api/calCompletedBingos?userId=${userID}`);
+      const { completedBingos } = await response.json();
+      setCompletedBingos(completedBingos);
+    }
+
+    fetchCompletedBingos();
+  }, [userID]);
   return (
     <BaseCard>
       <Grid container spacing={0}>
@@ -24,7 +36,7 @@ const CompletedBingos = () => {
           </div>
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h1 style={{ margin: 0 }}>5</h1>
+          <h1 style={{ margin: 0 }}>{completedBingos}</h1>
           <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>Completed Bingos</p>
         </Grid>
       </Grid>
