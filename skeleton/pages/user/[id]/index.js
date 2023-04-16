@@ -20,7 +20,7 @@ export default function UserPage({ user }) {
         <XpEarned />
       </Grid>
       <Grid item xs={4} lg={4}>
-        <CompletedBingos/>
+        <CompletedBingos user={user}/>
       </Grid>
       <Grid item xs={4} lg={4}>
         <CompletedExercises user={user}/>
