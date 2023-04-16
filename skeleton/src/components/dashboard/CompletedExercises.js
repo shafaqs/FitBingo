@@ -10,7 +10,7 @@ const CompletedExercises = (props) => {
   const userID = props.user.id;
   useEffect(() => {
     async function fetchCompletedExercises() {
-      const response = await fetch(`/api/CalcNoOfCompletedExer?userId=${userID}`);
+      const response = await fetch(`/api/calcCompletedExer?userId=${userID}`);
       const { completedExercises } = await response.json();
       setCompletedExercises(completedExercises);
     }
