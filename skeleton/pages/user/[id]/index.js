@@ -27,7 +27,7 @@ export default function UserPage({ user }) {
       </Grid>
       {/* ------------------------- end of row 1 ------------------------- */}
       <Grid item xs={12} lg={12}>
-        <ExercisesXPEarnedStats />
+        <ExercisesXPEarnedStats user={user} />
       </Grid>
       {/* ------------------------- end of row 2 ------------------------- */}
       <Grid item xs={8} lg={8}>

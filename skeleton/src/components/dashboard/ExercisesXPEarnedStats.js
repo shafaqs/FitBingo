@@ -5,6 +5,9 @@ import BaseCard from "../baseCard/BaseCard";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const ExercisesXPEarnedStats = () => {
+  const data1 = [150, 100, 300, 200, 0, 0, 0, 0, 0, 0, 0, 0];
+  const data2 = [150, 10, 30, 20, 0, 0, 0, 0, 0, 0, 0, 0];
+
   const optionssalesoverview = {
     grid: {
       show: true,

@@ -6,7 +6,6 @@ import { ListItemIcon } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const XpEarned = (props) => {
-  console.log('props: ', props);
   const [experiencePoints, setExperiencePoints] = useState(0);
   const userID = props.user.id; 
 
