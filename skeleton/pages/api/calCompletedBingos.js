@@ -9,7 +9,6 @@ export default async function calcCompletedBingos(req, res) {
       }
     
       const { userId } = req.query;
-      console.log(userId)
     
       const completedBingos = await prisma.bingo_Board.count({
         where: { isCompleted: true, userId: parseInt(userId) },
