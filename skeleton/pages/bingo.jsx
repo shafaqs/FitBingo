@@ -10,11 +10,15 @@ import styles from '../styles/Home.module.css';
 
 const BOARD_SIZE = 5;
 
+//Hard coded for now - Can refactor to fetch all categories from database instead.
+const exerciseCategories = ["Cardio", "Strength", "Calisthetics"];
+
 async function generateBingoBoard() {
   const numExercises = BOARD_SIZE * BOARD_SIZE - 1;
   try {
     let exercises = await getRandomExercises(numExercises) || [];
     const shuffledExercises = shuffleArray(exercises);
+
     const rows = [];
 
     for (let i = 0; i < BOARD_SIZE; i++) {
@@ -23,7 +27,7 @@ async function generateBingoBoard() {
         const exercise = {
           ...(i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2)
             ? { name: 'Fit Bingo' }
-            : shuffledExercises.pop() || { name: `Exercise ${i * BOARD_SIZE + j + 1}` }),
+            : shuffledExercises.pop() || { name: `${exerciseCategories[Math.floor(Math.random() * exerciseCategories.length)]}` }),
           rowIndex: i,
           columnIndex: j,
           clicked: i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2),
@@ -79,7 +83,7 @@ function getDefaultBoard() {
         name:
           rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2)
             ? 'Free space'
-            : `Exercise ${rowIndex * BOARD_SIZE + columnIndex + 1}`,
+            : `${exerciseCategories[Math.floor(Math.random() * exerciseCategories.length)]}`,
         clicked: rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2),
         rowIndex,
         columnIndex,
@@ -95,6 +99,7 @@ export default function Bingo() {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayAgain, setShowPlayAgain] = useState(false);
+  const [exercise, setExercise] = useState('');
 
   useEffect(() => {
     async function updateBoard() {
@@ -113,6 +118,7 @@ export default function Bingo() {
     }
   }, [board]);
 
+  
 
 
   function allExercisesCompleted(board) {
@@ -171,11 +177,21 @@ export default function Bingo() {
     setSelectedSquare(randomSquare);
   };
 
-
-
+  //Requests API to fetch a random exercise displayed on the square
+  const handleButtonClick = async () => {
+    if (!selectedSquare) return;
+     
+    const response = await fetch(`/api/exercises/${selectedSquare.name}`);
+    const data = await response.json();
+    setExercise(data);
+  };
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
+    
+
+    handleButtonClick();
+
     const clickedSquare = board[rowIndex][columnIndex];
     if (!clickedSquare.highlighted) return;
 
@@ -297,7 +313,11 @@ export default function Bingo() {
       {selectedSquare && (
         <Modal visible={modalVisible}>
           <h2>{selectedSquare.name}</h2>
-          <p>Exercise description goes here...</p>
+          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
+          Exercise Category: {exercise[0]} <br />
+          Title: {exercise[1]} <br />
+          Instructions: {exercise[2]} <br />
+          Estimated Time: {exercise[3]} minutes
           <div>
             <CustomButton onClick={handleCompleted}>Completed</CustomButton>
             <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
