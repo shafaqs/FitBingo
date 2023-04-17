@@ -8,8 +8,8 @@ const bingo_squares: Bingo_Square[] = [
     "exerciseId": null,
     "isCompleted": false,
     "inProgress": false,
-    "createAt": new Date("2020-07-29"),
-    "endAt": new Date("2020-07-29"),
+    "createAt": new Date("2023-01-29"),
+    "endAt": new Date("2023-01-30")
   },
   {
     "id": 2,
@@ -18,8 +18,8 @@ const bingo_squares: Bingo_Square[] = [
     "exerciseId": null,
     "isCompleted": false,
     "inProgress": false,
-    "createAt": null,
-    "endAt": null
+    "createAt": new Date("2023-02-01"),
+    "endAt": new Date("2023-02-02")
   },
   {
     "id": 3,
@@ -28,8 +28,8 @@ const bingo_squares: Bingo_Square[] = [
     "exerciseId": null,
     "isCompleted": true,
     "inProgress": false,
-    "createAt": null,
-    "endAt": null
+    "createAt": new Date("2023-02-03"),
+    "endAt": new Date("2023-02-04")
   },
   {
     "id": 4,
@@ -38,8 +38,8 @@ const bingo_squares: Bingo_Square[] = [
     "exerciseId": null,
     "isCompleted": false,
     "inProgress": false,
-    "createAt": null,
-    "endAt": null
+    "createAt": new Date("2023-03-01"),
+    "endAt": new Date("2023-03-02")
   },
   {
     "id": 5,

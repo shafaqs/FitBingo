@@ -9,6 +9,7 @@ export default async function calculateXP(req, res) {
     }
 
     const { userId } = req.query;
+    console.log('calculateXP, userId: ', userId);
 
     const completedSquares = await prisma.bingo_Square.count({
         where: { isCompleted: true, bingoBoard: { userId: parseInt(userId)  } },

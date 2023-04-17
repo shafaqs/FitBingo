@@ -17,7 +17,7 @@ export default function UserPage({ user }) {
         <title>BingoFit</title>
       </Head>
       <Grid item xs={4} lg={4}>
-        <XpEarned />
+        <XpEarned user={user}/>
       </Grid>
       <Grid item xs={4} lg={4}>
         <CompletedBingos user={user}/>
