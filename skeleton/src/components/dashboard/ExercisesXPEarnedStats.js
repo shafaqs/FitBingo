@@ -93,6 +93,8 @@ const ExercisesXPEarnedStats = () => {
       theme: "dark",
     },
   };
+
+  //Chart for exercises stats
   const seriessalesoverview = [
     {
       name: "Total Exercises",
