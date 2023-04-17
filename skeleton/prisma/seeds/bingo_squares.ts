@@ -7,7 +7,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 1,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": new Date("2020-07-29"),
+    "endAt": new Date("2020-07-29"),
   },
   {
     "id": 2,
@@ -15,15 +17,19 @@ const bingo_squares: Bingo_Square[] = [
     "position": 2,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 3,
     "bingoBoardId": 1,
     "position": 3,
     "exerciseId": null,
-    "isCompleted": false,
-    "inProgress": false
+    "isCompleted": true,
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 4,
@@ -31,7 +37,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 4,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 5,
@@ -39,7 +47,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 5,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 6,
@@ -47,7 +57,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 6,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 7,
@@ -55,7 +67,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 7,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 8,
@@ -63,7 +77,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 8,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 9,
@@ -71,7 +87,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 9,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 10,
@@ -79,7 +97,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 10,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 11,
@@ -87,7 +107,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 11,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 12,
@@ -95,7 +117,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 12,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 13,
@@ -103,7 +127,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 13,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 14,
@@ -111,7 +137,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 14,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 15,
@@ -119,7 +147,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 15,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 16,
@@ -127,7 +157,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 16,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 17,
@@ -135,7 +167,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 17,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 18,
@@ -143,7 +177,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 18,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 19,
@@ -151,7 +187,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 19,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 20,
@@ -159,7 +197,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 20,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 21,
@@ -167,7 +207,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 21,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 22,
@@ -175,7 +217,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 22,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 23,
@@ -183,7 +227,9 @@ const bingo_squares: Bingo_Square[] = [
     "position": 23,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   },
   {
     "id": 24,
@@ -191,6 +237,8 @@ const bingo_squares: Bingo_Square[] = [
     "position": 24,
     "exerciseId": null,
     "isCompleted": false,
-    "inProgress": false
+    "inProgress": false,
+    "createAt": null,
+    "endAt": null
   }
 ];

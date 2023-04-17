@@ -5,12 +5,12 @@ import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
 import { useState, useEffect } from "react";
 
-const CompletedExercises = () => {
+const CompletedExercises = (props) => {
   const [completedExercises, setCompletedExercises] = useState(0);
-  const userID = 1;
+  const userID = props.user.id;
   useEffect(() => {
     async function fetchCompletedExercises() {
-      const response = await fetch(`/api/CalcNoOfCompletedExer?userId=${userID}`);
+      const response = await fetch(`/api/calcCompletedExer?userId=${userID}`);
       const { completedExercises } = await response.json();
       setCompletedExercises(completedExercises);
     }

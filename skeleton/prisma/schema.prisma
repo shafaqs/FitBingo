@@ -33,11 +33,13 @@ model Bingo_Square {
   id           Int         @id
   bingoBoard   Bingo_Board @relation(fields: [bingoBoardId], references: [id])
   bingoBoardId Int
-  position     Int         //position on the board. ranges from 1-24 account for free space
+  position     Int //position on the board. ranges from 1-24 account for free space
   exercise     Exercise    @relation(fields: [exerciseId], references: [id])
   exerciseId   Int
   isCompleted  Boolean
-  inProgress   Boolean     //An exercise cannot be completed and in progress at the same time
+  inProgress   Boolean //An exercise cannot be completed and in progress at the same time
+  createAt     DateTime
+  endAt        DateTime
 }
 
 model Exercise {
