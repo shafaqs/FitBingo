@@ -5,7 +5,7 @@ import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { checkBingo } from '@/modules/bingoHelpers';
 
-import styles from '../styles/Home.module.css';
+import styles from '/styles/Home.module.css';
 
 const BOARD_SIZE = 5;
 
@@ -43,37 +43,6 @@ async function generateBingoBoard() {
     return null;
   }
 }
-// async function generateBingoBoard() {
-//   const numExercises = BOARD_SIZE * BOARD_SIZE - 1;
-//   try {
-//     let exercises = await getRandomExercises(numExercises) || [];
-//     const shuffledExercises = shuffleArray(exercises);
-//     const rows = [];
-
-//     for (let i = 0; i < BOARD_SIZE; i++) {
-//       const row = [];
-//       for (let j = 0; j < BOARD_SIZE; j++) {
-//         const exerciseData = shuffledExercises.pop() || { name: `Exercise ${i * BOARD_SIZE + j + 1}`, description: 'Exercise description goes here...', type: 'Type' };
-//         const exercise = {
-//           ...(i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2)
-//             ? { name: 'Fit Bingo', description: '', type: '' }
-//             : exerciseData),
-//           rowIndex: i,
-//           columnIndex: j,
-//           clicked: i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2),
-//           highlighted: false,
-//         };
-//         row.push(exercise);
-//       }
-//       rows.push(row);
-//     }
-
-//     return rows;
-//   } catch (error) {
-//     console.error('Error fetching exercises', error);
-//     return null;
-//   }
-// }
 
 function getDefaultBoard() {
   return Array.from({ length: BOARD_SIZE }, (_, rowIndex) =>
@@ -90,8 +59,6 @@ function getDefaultBoard() {
     })
   );
 }
-
-
 
 export default function Bingo(props) {
   const [board, setBoard] = useState(null);
