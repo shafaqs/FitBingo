@@ -3,10 +3,25 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import dynamic from "next/dynamic";
 import BaseCard from "../baseCard/BaseCard";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useEffect, useState } from "react";
 
-const ExercisesXPEarnedStats = () => {
-  const data1 = [150, 100, 300, 200, 0, 0, 0, 0, 0, 0, 0, 0];
-  const data2 = [150, 10, 30, 20, 0, 0, 0, 0, 0, 0, 0, 0];
+const ExercisesXPEarnedStats = (props) => {
+  const [experiencePoints, setExperiencePoints] = useState([]);
+  const userID = props.user.id; 
+
+  useEffect(() => {
+    async function calMonthlyXP () {
+      const response = await fetch(`/api/calMonthlyXP?userId=${userID}`);
+      const { experiencePoints } = await response.json();
+      const experiencePointsArray = Object.values(experiencePoints);
+      setExperiencePoints(experiencePointsArray); // ✅
+    };
+    calMonthlyXP();
+  }, [userID]);
+
+  const monthlyExercises = experiencePoints.map(i => i / 100);
+
+
 
   const optionssalesoverview = {
     grid: {
@@ -77,9 +92,9 @@ const ExercisesXPEarnedStats = () => {
     },
     yaxis: {
       show: true,
-      min: 100,
-      max: 400,
-      tickAmount: 3,
+      min: 0,
+      max: 600,
+      tickAmount: 10,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
@@ -99,11 +114,11 @@ const ExercisesXPEarnedStats = () => {
   const seriessalesoverview = [
     {
       name: "Total Exercises",
-      data: [355, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
+      data: monthlyExercises,
     },
     {
       name: "XP Earned",
-      data: [280, 250, 325, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+      data: experiencePoints,
     },
   ];
   return (
