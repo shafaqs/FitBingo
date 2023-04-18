@@ -90,17 +90,30 @@ const ExercisesXPEarnedStats = (props) => {
         },
       },
     },
-    yaxis: {
+    yaxis: [{
       show: true,
       min: 0,
-      max: 600,
-      tickAmount: 10,
+      max: 10,
+      tickAmount: 5,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
         },
       },
     },
+    {
+      show: true,
+      min: 0,
+      max: 800,
+      tickAmount: 10,
+      opposite: true,
+      labels: {
+        style: {
+          cssClass: "grey--text lighten-2--text fill-color",
+        },
+      },
+    },
+  ],
     stroke: {
       show: true,
       width: 5,
