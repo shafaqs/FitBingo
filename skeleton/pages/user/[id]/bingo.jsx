@@ -5,7 +5,7 @@ import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { checkBingo } from '@/modules/bingoHelpers';
 
-import styles from '../styles/Home.module.css';
+import styles from '/styles/Home.module.css';
 
 const BOARD_SIZE = 5;
 
