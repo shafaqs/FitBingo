@@ -5,14 +5,14 @@ import FeatherIcon from "feather-icons-react";
 import { ListItemIcon } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const XpEarned = () => {
+const XpEarned = (props) => {
   const [experiencePoints, setExperiencePoints] = useState(0);
-  const userID = 1; //using userID 1 as an example
+  const userID = props.user.id; 
 
   useEffect(() => {
     async function calculateXP() {
       const response = await fetch(`/api/calculateXP?userId=${userID}`);
-      const {experiencePoints} = await response.json();
+      const { experiencePoints } = await response.json();
       setExperiencePoints(experiencePoints);
     };
 
