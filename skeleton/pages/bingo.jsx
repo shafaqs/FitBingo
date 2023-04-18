@@ -1,11 +1,20 @@
-import { useEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
+import Image from "next/image";
+import FeatherIcon from "feather-icons-react";
+
+
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
+import { Button, IconButton, Fab, ButtonGroup } from "@mui/material";
+
+
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { checkBingo } from '@/modules/bingoHelpers';
 
 import styles from '../styles/Home.module.css';
+import LogoImage from "../assets/images/logos/Logo_fix.png";
+
 
 const BOARD_SIZE = 5;
 
@@ -43,37 +52,7 @@ async function generateBingoBoard() {
     return null;
   }
 }
-// async function generateBingoBoard() {
-//   const numExercises = BOARD_SIZE * BOARD_SIZE - 1;
-//   try {
-//     let exercises = await getRandomExercises(numExercises) || [];
-//     const shuffledExercises = shuffleArray(exercises);
-//     const rows = [];
 
-//     for (let i = 0; i < BOARD_SIZE; i++) {
-//       const row = [];
-//       for (let j = 0; j < BOARD_SIZE; j++) {
-//         const exerciseData = shuffledExercises.pop() || { name: `Exercise ${i * BOARD_SIZE + j + 1}`, description: 'Exercise description goes here...', type: 'Type' };
-//         const exercise = {
-//           ...(i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2)
-//             ? { name: 'Fit Bingo', description: '', type: '' }
-//             : exerciseData),
-//           rowIndex: i,
-//           columnIndex: j,
-//           clicked: i === Math.floor(BOARD_SIZE / 2) && j === Math.floor(BOARD_SIZE / 2),
-//           highlighted: false,
-//         };
-//         row.push(exercise);
-//       }
-//       rows.push(row);
-//     }
-
-//     return rows;
-//   } catch (error) {
-//     console.error('Error fetching exercises', error);
-//     return null;
-//   }
-// }
 
 function getDefaultBoard() {
   return Array.from({ length: BOARD_SIZE }, (_, rowIndex) =>
@@ -81,12 +60,13 @@ function getDefaultBoard() {
       return {
         name:
           rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2)
-            ? 'Free space'
+            ? LogoImage
             : `${exerciseCategories[Math.floor(Math.random() * exerciseCategories.length)]}`,
         clicked: rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2),
         rowIndex,
         columnIndex,
       };
+
     })
   );
 }
@@ -99,6 +79,8 @@ export default function Bingo(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayAgain, setShowPlayAgain] = useState(false);
   const [exercise, setExercise] = useState('');
+  const [timer, setTimer] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
 
   useEffect(() => {
     async function updateBoard() {
@@ -116,8 +98,22 @@ export default function Bingo(props) {
       setShowPlayAgain(true);
     }
   }, [board]);
+  useEffect(() => {
+    let timerInterval;
 
-  
+    if (timerRunning) {
+      timerInterval = setInterval(() => {
+        setTimer((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(timerInterval);
+    }
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [timerRunning]);
+
 
 
   function allExercisesCompleted(board) {
@@ -179,7 +175,7 @@ export default function Bingo(props) {
   //Requests API to fetch a random exercise displayed on the square
   const handleButtonClick = async () => {
     if (!selectedSquare) return;
-     
+
     const response = await fetch(`/api/exercises/${selectedSquare.name}`);
     const data = await response.json();
     setExercise(data);
@@ -187,7 +183,7 @@ export default function Bingo(props) {
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
-    
+
 
     handleButtonClick();
 
@@ -196,11 +192,13 @@ export default function Bingo(props) {
 
     setSelectedSquare(clickedSquare);
     setModalVisible(true);
+    setTimer(0);
 
   };
 
   const handleCompleted = () => {
     setModalVisible(false);
+    setTimerRunning(false);
     if (!selectedSquare) return;
     setBoard((prevBoard) => {
       const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
@@ -225,6 +223,7 @@ export default function Bingo(props) {
 
   const handleChooseAnother = () => {
     setModalVisible(false);
+    setTimerRunning(false);
     playBingo();
   };
 
@@ -234,9 +233,18 @@ export default function Bingo(props) {
     }
   }, [board]);
 
+  const startTimer = () => {
+    setTimerRunning(true);
+  };
+
+  const stopTimer = () => {
+    setTimerRunning(false);
+  };
 
   const renderSquare = (column, columnIndex, rowIndex) => {
     console.log("Rendering square:", column);
+
+    const isMiddleSquare = rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2);
 
     return (
       <td
@@ -244,26 +252,11 @@ export default function Bingo(props) {
         className={`${styles.square} ${column.highlighted ? styles.highlighted : ''} ${column.completed ? styles.completed : ''}`}
         onClick={() => handleExerciseClick(rowIndex, columnIndex)}
       >
-        {column.completed ? '✓' : column.name}
+        {column.completed ? '✓' : isMiddleSquare ? <div className={styles.logoContainer}></div> : column.name}
+
       </td>
     );
   };
-  // const renderSquare = (column, columnIndex, rowIndex) => {
-  //   console.log("Rendering square:", column);
-
-  //   return (
-  //     <td
-  //       key={columnIndex}
-  //       className={`${styles.square} ${column.highlighted ? styles.highlighted : ''} ${column.completed ? styles.completed : ''}`}
-  //       onClick={() => handleExerciseClick(rowIndex, columnIndex)}
-  //     >
-  //       {column.completed ? '✓' : `${column.name} (${column.type})`}
-  //     </td>
-  //   );
-  // };
-
-
-
 
 
 
@@ -295,7 +288,7 @@ export default function Bingo(props) {
           </tbody>
         </table>
         {!showPlayAgain && (
-          <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
+          <CustomButton color="primary" sx={{ marginTop: "50px" }} onClick={playBingo}>
             Play Bingo
           </CustomButton>
         )}
@@ -303,9 +296,9 @@ export default function Bingo(props) {
 
         {/* Add the "Play Again" button */}
         {showPlayAgain && (
-          <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
+          <Button color="success" sx={{ marginTop: "10px" }} onClick={resetBoard}>
             Play Again
-          </CustomButton>
+          </Button>
         )}
       </div>
 
@@ -317,9 +310,25 @@ export default function Bingo(props) {
           Title: {exercise[1]} <br />
           Instructions: {exercise[2]} <br />
           Estimated Time: {exercise[3]} minutes
+          <p>
+            Time: {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
+          </p>
           <div>
-            <CustomButton onClick={handleCompleted}>Completed</CustomButton>
-            <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
+            <CustomButton color="primary" onClick={startTimer}>
+              <FeatherIcon icon="clock" width="20" height="20" />
+            </CustomButton>
+            <CustomButton color="secondary" onClick={stopTimer}>
+              <FeatherIcon icon="x-circle" />
+            </CustomButton>
+
+          </div>
+          <div>
+            <Button color="success" onClick={handleCompleted}>
+              Completed
+            </Button>
+            <Button color="secondary" onClick={handleChooseAnother}>
+              Choose Another
+            </Button>
           </div>
         </Modal>
       )}
