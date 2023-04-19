@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react';
-import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 
 
@@ -242,7 +241,6 @@ export default function Bingo(props) {
   };
 
   const renderSquare = (column, columnIndex, rowIndex) => {
-    console.log("Rendering square:", column);
 
     const isMiddleSquare = rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2);
 
