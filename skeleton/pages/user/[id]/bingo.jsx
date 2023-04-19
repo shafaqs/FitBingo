@@ -130,26 +130,7 @@ export default function Bingo(props) {
 
     return bingoBoardObject;
   }
-  async function saveBingoBoardObject(boardObject) {
-    try {
-      const response = await fetch('/api/bingo-board', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(boardObject),
-      });
 
-      if (response.ok) {
-        toast('Bingo board sent successfully!', { className: 'success-toast' });
-      } else {
-        toast('Error sending bingo board!', { className: 'error-toast' });
-      }
-    } catch (error) {
-      console.error('Error sending bingo board:', error);
-      toast('Error sending bingo board!', { className: 'error-toast' });
-    }
-  }
 
 
   function allExercisesCompleted(board) {
@@ -327,13 +308,8 @@ export default function Bingo(props) {
             Play Bingo
           </CustomButton>
         )}
-        <Button
-          color="primary"
-          sx={{ marginTop: "10px" }}
-          onClick={() => saveBingoBoardObject(composeBingoBoardObject(board))}
-        >
-          Save Bingo Board
-        </Button>
+
+
 
 
         {/* Add the "Play Again" button */}
