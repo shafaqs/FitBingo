@@ -6,14 +6,14 @@
 }
 
 .board {
-  border-collapse: collapse;
+  border-collapse: separate;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
 .square {
-  border: 1px solid #d1d1d1;
-  background-color: #f6f6f6;
+  border: 1px solid #fcf1ed;
+  background-color: #ffff;
   padding: 10px;
   text-align: center;
   width: 100px;
@@ -35,7 +35,7 @@
 
 
 .square:hover {
-  background-color: bisque;
+  background-color: #fcf1ed;
   cursor: pointer;
 }
 
@@ -52,7 +52,11 @@
 
 .square.highlighted {
   background-color: #05b2bd;
-  color: #fff;
+  color: #fcf1ed;
+}
+
+.square.completed {
+  background-color: #fb9678;
 }
 
 .modal {
@@ -65,6 +69,79 @@
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.board {
+  border-collapse: separate;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.square {
+  border: 1px solid #fcf1ed;
+  background-color: #ffff;
+  padding: 10px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logoContainer {
+  width: 100%;
+  height: 100%;
+  background-image: url("/_next/static/media/Logo_fix.f0143202.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+.square:hover {
+  background-color: #fcf1ed;
+  cursor: pointer;
+}
+
+.playButton {
+  margin-top: 50px;
+}
+
+.boardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.square.highlighted {
+  background-color: #05b2bd;
+  color: #fcf1ed;
+}
+
+.square.completed {
+  background-color: #fb9678;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
 
 .modalContent {
   background-color: #fefefe;
@@ -91,6 +168,18 @@
   animation: fadeIn 0.10s ease-out;
 }
 
-.completed {
-  background-color: #00b894;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bingo-toast {
+  animation: fadeIn 0.10s ease-out;
 }

@@ -1,7 +1,4 @@
 import { React, useEffect, useState } from 'react';
-import FeatherIcon from "feather-icons-react";
-
-
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
@@ -196,6 +193,7 @@ export default function Bingo(props) {
   const handleCompleted = () => {
     setModalVisible(false);
     setTimerRunning(false);
+    setTimer(0);
     if (!selectedSquare) return;
     setBoard((prevBoard) => {
       const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
@@ -302,31 +300,44 @@ export default function Bingo(props) {
 
       {selectedSquare && (
         <Modal visible={modalVisible}>
-          <h2>{selectedSquare.name}</h2>
-          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
-          Exercise Category: {exercise[0]} <br />
-          Title: {exercise[1]} <br />
-          Instructions: {exercise[2]} <br />
-          Estimated Time: {exercise[3]} minutes
-          <p>
-            Time: {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
-          </p>
           <div>
-            <CustomButton color="primary" onClick={startTimer}>
-              <FeatherIcon icon="clock" width="20" height="20" />
-            </CustomButton>
-            <CustomButton color="secondary" onClick={stopTimer}>
-              <FeatherIcon icon="x-circle" />
-            </CustomButton>
+            <h2>{selectedSquare.name}</h2>
+            <div className="modal-section">
+              <h3>Exercise Category:</h3>
+              <p>{exercise[0]}</p>
+            </div>
+            <div className="modal-section">
+              <h3>Title:</h3>
+              <p>{exercise[1]}</p>
+            </div>
+            <div className="modal-section">
+              <h3>Instructions:</h3>
+              <p>{exercise[2]}</p>
+            </div>
+            <div className="modal-section">
+              <h3>Estimated Time:</h3>
+              <p>{exercise[3]} minutes</p>
+            </div>
+            <p>
+              Time: {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
+            </p>
+            <div>
+              <CustomButton color="primary" onClick={startTimer}>
+                Start Timer
+              </CustomButton>
+              <CustomButton color="secondary" onClick={stopTimer}>
+                Stop Timer
+              </CustomButton>
 
-          </div>
-          <div>
-            <Button color="success" onClick={handleCompleted}>
-              Completed
-            </Button>
-            <Button color="secondary" onClick={handleChooseAnother}>
-              Choose Another
-            </Button>
+            </div>
+            <div>
+              <Button color="success" onClick={handleCompleted}>
+                Completed
+              </Button>
+              <Button color="secondary" onClick={handleChooseAnother}>
+                Choose Another
+              </Button>
+            </div>
           </div>
         </Modal>
       )}
