@@ -17,7 +17,7 @@ export default function Stats({ user }) {
           <CardContent>
             <Typography variant="h1">Statistics Page</Typography> */}
             <Grid item xs={12} lg={12}>
-              <ExercisesXPEarnedStats />
+              <ExercisesXPEarnedStats user={user}/>
             </Grid>
             {/* ------------------------- row 1 ------------------------- */}
             <Grid item xs={8} lg={8}>
