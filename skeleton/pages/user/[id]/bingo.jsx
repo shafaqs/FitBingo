@@ -37,7 +37,7 @@ async function generateBingoBoard() {
       }
       rows.push(row);
     }
-
+    console.log('rows', rows);
     return rows;
   } catch (error) {
     console.error('Error fetching exercises', error);
@@ -138,6 +138,7 @@ export default function Bingo(props) {
           return col;
         })
       );
+      console.log('newBoard', newBoard);
       return newBoard;
     });
 
@@ -196,15 +197,39 @@ export default function Bingo(props) {
     playBingo();
   };
 
+  // Ehsan
+  // async function saveBingoBoard(board) {
+  //   try {
+  //     const response = await fetch('/api/saveBingoBoard', {
+  //       method: 'POST',
+  //       body: JSON.stringify(board)
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error saving bingo board', error);
+  //     return null;
+  //   }
+  // }
+
   useEffect(() => {
-    if (board && checkBingo(board)) {
-      toast("Bingo!", { className: "bingo-toast" });
+    // commented out by Ehsan
+    // if (board && checkBingo(board)) {
+    //   toast("Bingo!", { className: "bingo-toast" });
+    // }
+    async function handleBingo() {
+      if (board && checkBingo(board)) {
+        toast("Bingo!", { className: "bingo-toast" });
+        //Ehsan
+        // await saveBingoBoard(board);
+      }
     }
+    handleBingo();
   }, [board]);
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
-    console.log("Rendering square:", column);
+    // console.log("Rendering square:", column);
 
     return (
       <td
