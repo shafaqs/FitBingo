@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 
 
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
-import { checkBingo } from '@/modules/bingoHelpers';
+import { composeBingoBoardObject, checkBingo } from '@/modules/bingoHelpers';
 
 import styles from "../../../styles/Home.module.css";
 import LogoImage from "../../../assets/images/logos/Logo_fix.png";
@@ -112,26 +112,6 @@ export default function Bingo(props) {
       clearInterval(timerInterval);
     };
   }, [timerRunning]);
-
-  function composeBingoBoardObject(board) {
-    const squares = board
-      .flat()
-      .map((square) => ({
-        exerciseName: square.name,
-        rowIndex: square.rowIndex,
-        columnIndex: square.columnIndex,
-        clicked: square.clicked,
-      }));
-
-    const bingoBoardObject = {
-      userId: props.userId,
-      bingoBoardSquares: squares,
-    };
-
-    return bingoBoardObject;
-  }
-
-
 
   function allExercisesCompleted(board) {
     const flattenedBoard = board.flat();
