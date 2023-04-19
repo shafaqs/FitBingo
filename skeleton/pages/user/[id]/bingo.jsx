@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
-import { checkBingo } from '@/modules/bingoHelpers';
+import { composeBingoBoardObject, checkBingo } from '@/modules/bingoHelpers';
 import { Grid, Card, CardContent } from "@mui/material";
 import Head from 'next/head';
 import styles from '/styles/Home.module.css';
@@ -171,8 +171,11 @@ export default function Bingo(props) {
   const handleCompleted = () => {
     setModalVisible(false);
     if (!selectedSquare) return;
+    console.log('selectedSquare', selectedSquare)
     setBoard((prevBoard) => {
       const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
+      
+      updateBingoSquare();
 
       // Check if the selectedSquare's row and column are defined
       if (
@@ -197,35 +200,13 @@ export default function Bingo(props) {
     playBingo();
   };
 
-  // Ehsan
-  // async function saveBingoBoard(board) {
-  //   try {
-  //     const response = await fetch('/api/saveBingoBoard', {
-  //       method: 'POST',
-  //       body: JSON.stringify(board)
-  //     });
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Error saving bingo board', error);
-  //     return null;
-  //   }
-  // }
-
   useEffect(() => {
-    // commented out by Ehsan
-    // if (board && checkBingo(board)) {
-    //   toast("Bingo!", { className: "bingo-toast" });
-    // }
-    async function handleBingo() {
-      if (board && checkBingo(board)) {
-        toast("Bingo!", { className: "bingo-toast" });
-        //Ehsan
-        // await saveBingoBoard(board);
-      }
+    if (board && checkBingo(board)) {
+      saveBingoBoard(composeBingoBoardObject(board));
+      toast("Bingo!", { className: "bingo-toast" });
     }
-    handleBingo();
   }, [board]);
+
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
@@ -277,6 +258,41 @@ export default function Bingo(props) {
       };
     })
   );
+  ////////////////////////////////////////////////////////////////
+  ////////////save bingo board and squares to db //////////////////
+  ///////////////////////////////////////////////////////////////
+  async function saveBingoBoard(boardObject) {
+    try {
+      const response = await fetch('/api/bingoBoard', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: 1, // replace with the user ID of the current user
+          isCompleted: false
+        }),
+      });
+      const data = await response.json();
+      //await saveBingoSquares(data.id)
+      return data;
+    } catch (error) {
+      console.error('Error saving bingo board', error);
+      return null;
+  }
+}
+
+async function updateBingoSquare(id) {
+  try {
+    const response = await fetch(`/api/bingoSquare`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        isCompleted: true
+      })
+    })
+    const data = await response.json()
+
+  } catch (error) {
+    console.error(error)
+  }
+}
 
   return (
     <Grid container spacing={0}>
