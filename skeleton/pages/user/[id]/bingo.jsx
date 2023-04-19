@@ -4,7 +4,8 @@ import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { checkBingo } from '@/modules/bingoHelpers';
-
+import { Grid, Card, CardContent } from "@mui/material";
+import Head from 'next/head';
 import styles from '/styles/Home.module.css';
 
 const BOARD_SIZE = 5;
@@ -253,44 +254,55 @@ export default function Bingo(props) {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.boardContainer}>
-        <table className={styles.board}>
-          <tbody>
-            {/* Render each row and column of the bingo board */}
-            {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
-          </tbody>
-        </table>
-        {!showPlayAgain && (
-          <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
-            Play Bingo
-          </CustomButton>
-        )}
+    <Grid container spacing={0}>
+      <Head>
+        <title>BingoFit</title>
+      </Head>
+      <Grid item xs={12} lg={12}>
+        <Card>
+          <CardContent>
+            <div className={styles.container}>
+              <div className={styles.boardContainer}>
+                <table className={styles.board}>
+                  <tbody>
+                    {/* Render each row and column of the bingo board */}
+                    {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
+                  </tbody>
+                </table>
+                {!showPlayAgain && (
+                  <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
+                    Play Bingo
+                  </CustomButton>
+                )}
 
 
-        {/* Add the "Play Again" button */}
-        {showPlayAgain && (
-          <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
-            Play Again
-          </CustomButton>
-        )}
-      </div>
+                {/* Add the "Play Again" button */}
+                {showPlayAgain && (
+                  <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
+                    Play Again
+                  </CustomButton>
+                )}
+              </div>
 
-      {selectedSquare && (
-        <Modal visible={modalVisible}>
-          <h2>{selectedSquare.name}</h2>
-          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
-          Exercise Category: {exercise[0]} <br />
-          Title: {exercise[1]} <br />
-          Instructions: {exercise[2]} <br />
-          Estimated Time: {exercise[3]} minutes
-          <div>
-            <CustomButton onClick={handleCompleted}>Completed</CustomButton>
-            <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
-          </div>
-        </Modal>
-      )}
-      <ToastContainer />
-    </div>
+              {selectedSquare && (
+                <Modal visible={modalVisible}>
+                  <h2>{selectedSquare.name}</h2>
+                  {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
+                  Exercise Category: {exercise[0]} <br />
+                  Title: {exercise[1]} <br />
+                  Instructions: {exercise[2]} <br />
+                  Estimated Time: {exercise[3]} minutes
+                  <div>
+                    <CustomButton onClick={handleCompleted}>Completed</CustomButton>
+                    <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
+                  </div>
+                </Modal>
+              )}
+              <ToastContainer />
+            </div>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
