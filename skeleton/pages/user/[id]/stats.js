@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Grid } from "@mui/material";
 import ExercisesXPEarnedStats from "@/src/components/dashboard/ExercisesXPEarnedStats";
 import ExercisesPerDayStats from "@/src/components/dashboard/ExercisesPerDayStats";
-import DailyActivity from "@/src/components/dashboard/DailyActivity";
+import MotivationQuotes from "@/src/components/dashboard/MotivationQuotes";
 import { PrismaClient } from '@prisma/client';
 
 export default function Stats({ user }) {
@@ -24,7 +24,7 @@ export default function Stats({ user }) {
               <ExercisesPerDayStats user={user}/>
             </Grid>
             <Grid item xs={4} lg={4}>
-              <DailyActivity />
+              <MotivationQuotes />
             </Grid>
           {/* </CardContent>
         </Card>
