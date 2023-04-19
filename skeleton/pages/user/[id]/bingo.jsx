@@ -4,7 +4,8 @@ import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { checkBingo } from '@/modules/bingoHelpers';
-
+import { Grid, Card, CardContent } from "@mui/material";
+import Head from 'next/head';
 import styles from '/styles/Home.module.css';
 
 const BOARD_SIZE = 5;
@@ -36,7 +37,7 @@ async function generateBingoBoard() {
       }
       rows.push(row);
     }
-
+    console.log('rows', rows);
     return rows;
   } catch (error) {
     console.error('Error fetching exercises', error);
@@ -137,6 +138,7 @@ export default function Bingo(props) {
           return col;
         })
       );
+      console.log('newBoard', newBoard);
       return newBoard;
     });
 
@@ -195,15 +197,39 @@ export default function Bingo(props) {
     playBingo();
   };
 
+  // Ehsan
+  // async function saveBingoBoard(board) {
+  //   try {
+  //     const response = await fetch('/api/saveBingoBoard', {
+  //       method: 'POST',
+  //       body: JSON.stringify(board)
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error saving bingo board', error);
+  //     return null;
+  //   }
+  // }
+
   useEffect(() => {
-    if (board && checkBingo(board)) {
-      toast("Bingo!", { className: "bingo-toast" });
+    // commented out by Ehsan
+    // if (board && checkBingo(board)) {
+    //   toast("Bingo!", { className: "bingo-toast" });
+    // }
+    async function handleBingo() {
+      if (board && checkBingo(board)) {
+        toast("Bingo!", { className: "bingo-toast" });
+        //Ehsan
+        // await saveBingoBoard(board);
+      }
     }
+    handleBingo();
   }, [board]);
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
-    console.log("Rendering square:", column);
+    // console.log("Rendering square:", column);
 
     return (
       <td
@@ -253,44 +279,55 @@ export default function Bingo(props) {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.boardContainer}>
-        <table className={styles.board}>
-          <tbody>
-            {/* Render each row and column of the bingo board */}
-            {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
-          </tbody>
-        </table>
-        {!showPlayAgain && (
-          <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
-            Play Bingo
-          </CustomButton>
-        )}
+    <Grid container spacing={0}>
+      <Head>
+        <title>BingoFit</title>
+      </Head>
+      <Grid item xs={12} lg={12}>
+        <Card>
+          <CardContent>
+            <div className={styles.container}>
+              <div className={styles.boardContainer}>
+                <table className={styles.board}>
+                  <tbody>
+                    {/* Render each row and column of the bingo board */}
+                    {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
+                  </tbody>
+                </table>
+                {!showPlayAgain && (
+                  <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
+                    Play Bingo
+                  </CustomButton>
+                )}
 
 
-        {/* Add the "Play Again" button */}
-        {showPlayAgain && (
-          <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
-            Play Again
-          </CustomButton>
-        )}
-      </div>
+                {/* Add the "Play Again" button */}
+                {showPlayAgain && (
+                  <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
+                    Play Again
+                  </CustomButton>
+                )}
+              </div>
 
-      {selectedSquare && (
-        <Modal visible={modalVisible}>
-          <h2>{selectedSquare.name}</h2>
-          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
-          Exercise Category: {exercise[0]} <br />
-          Title: {exercise[1]} <br />
-          Instructions: {exercise[2]} <br />
-          Estimated Time: {exercise[3]} minutes
-          <div>
-            <CustomButton onClick={handleCompleted}>Completed</CustomButton>
-            <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
-          </div>
-        </Modal>
-      )}
-      <ToastContainer />
-    </div>
+              {selectedSquare && (
+                <Modal visible={modalVisible}>
+                  <h2>{selectedSquare.name}</h2>
+                  {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
+                  Exercise Category: {exercise[0]} <br />
+                  Title: {exercise[1]} <br />
+                  Instructions: {exercise[2]} <br />
+                  Estimated Time: {exercise[3]} minutes
+                  <div>
+                    <CustomButton onClick={handleCompleted}>Completed</CustomButton>
+                    <CustomButton onClick={handleChooseAnother}>Choose Another</CustomButton>
+                  </div>
+                </Modal>
+              )}
+              <ToastContainer />
+            </div>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
