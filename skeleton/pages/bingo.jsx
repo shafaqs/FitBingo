@@ -93,11 +93,13 @@ export default function Bingo(props) {
     }
     updateBoard();
   }, []);
+
   useEffect(() => {
     if (board && checkBingo(board)) {
       setShowPlayAgain(true);
     }
   }, [board]);
+  
   useEffect(() => {
     let timerInterval;
 
