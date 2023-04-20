@@ -37,7 +37,7 @@ const CompletedExercises = (props) => {
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h1 style={{ margin: 0 }}>{completedExercises}</h1>
-          <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>Completed Exercises</p>
+          <p style={{ color: "#999", opacity: 0.7, margin: 0, fontSize: "0.8rem" }}>Completed Exercises</p>
         </Grid>
       </Grid>
     </BaseCard>
