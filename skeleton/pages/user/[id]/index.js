@@ -12,19 +12,22 @@ import ExercisesPerDayStats from "@/src/components/dashboard/ExercisesPerDayStat
 
 export default function UserPage({ user }) {
   return ( 
-    <Grid container spacing={0}>
+    <Grid container spacing={0} display>
       <Head>
         <title>BingoFit</title>
       </Head>
-      <Grid item xs={4} lg={4}>
-        <XpEarned user={user}/>
+      <Grid container spacing={0} display>
+        <Grid item xs={4} md={4} lg={4} >
+          <XpEarned user={user}/>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} >
+          <CompletedBingos user={user}/>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} >
+          <CompletedExercises user={user}/>
+        </Grid>
       </Grid>
-      <Grid item xs={4} lg={4}>
-        <CompletedBingos user={user}/>
-      </Grid>
-      <Grid item xs={4} lg={4}>
-        <CompletedExercises user={user}/>
-      </Grid>
+
       {/* ------------------------- end of row 1 ------------------------- */}
       <Grid item xs={12} lg={12}>
         <ExercisesXPEarnedStats user={user} />

@@ -37,7 +37,7 @@ const CompletedBingos = (props) => {
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h1 style={{ margin: 0 }}>{completedBingos}</h1>
-          <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>Completed Bingos</p>
+          <p style={{ color: "#999", opacity: 0.7, margin: 0, fontSize: "0.8rem" }}>Completed Bingos</p>
         </Grid>
       </Grid>
     </BaseCard>

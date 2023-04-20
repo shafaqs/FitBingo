@@ -14,7 +14,7 @@ const ExercisesXPEarnedStats = (props) => {
       const response = await fetch(`/api/calMonthlyXP?userId=${userID}`);
       const { experiencePoints } = await response.json();
       const experiencePointsArray = Object.values(experiencePoints);
-      setExperiencePoints(experiencePointsArray); // ✅
+      setExperiencePoints(experiencePointsArray); 
     };
     calMonthlyXP();
   }, [userID]);
