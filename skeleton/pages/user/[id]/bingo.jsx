@@ -6,7 +6,10 @@ import { getRandomExercises, shuffleArray } from '@/modules/bingo';
 import { composeBingoBoardObject, checkBingo } from '@/modules/bingoHelpers';
 import { Grid, Card, CardContent } from "@mui/material";
 import Head from 'next/head';
+import UserXP from '@/components/UserXP';
 import styles from '/styles/Home.module.css';
+import { useRouter } from 'next/router';
+import { PrismaClient } from '@prisma/client';
 
 const BOARD_SIZE = 5;
 
@@ -67,13 +70,16 @@ export default function Bingo(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayAgain, setShowPlayAgain] = useState(false);
   const [exercise, setExercise] = useState('');
+  const [xp, setXP] = useState(props.user.experience_points);
+
+  const router = useRouter();
 
   useEffect(() => {
     async function updateBoard() {
       if (!board) {
-        setBoard(getDefaultBoard(props));
+        setBoard(getDefaultBoard());
       } else {
-        const newBoard = await generateBingoBoard(props);
+        const newBoard = await generateBingoBoard();
         setBoard(newBoard);
       }
     }
@@ -145,6 +151,26 @@ export default function Bingo(props) {
     setSelectedSquare(randomSquare);
   };
 
+  //Gives +100 XP when a user completes an exercise, or 500 upon a bingo
+  async function incrementXP(bingo) {
+
+    //If the argument is null, +100XP, if not null, +500 for the completed bingo
+    const xpAmount = bingo ? 500 : 100;
+    const newXP = xp + xpAmount;
+    console.log("bingo is: " + bingo + ". set xp is: " + newXP)
+    //Initatiates an PUT request to the api
+    const updateResponse = await fetch(`/api/getUserXP`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      
+      body: JSON.stringify({ experience_points: newXP, userId: router.query.id, }),
+    });
+
+    if (updateResponse.ok) {
+      setXP(newXP);
+    }
+  }
+
   //Requests API to fetch a random exercise displayed on the square
   const handleButtonClick = async () => {
     if (!selectedSquare) return;
@@ -156,19 +182,17 @@ export default function Bingo(props) {
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
-    
-
     handleButtonClick();
-
     const clickedSquare = board[rowIndex][columnIndex];
+
     if (!clickedSquare.highlighted) return;
 
     setSelectedSquare(clickedSquare);
     setModalVisible(true);
-
   };
 
   const handleCompleted = () => {
+    incrementXP(null) //Grants the user 100 XP
     setModalVisible(false);
     if (!selectedSquare) return;
     console.log('selectedSquare', selectedSquare)
@@ -200,17 +224,40 @@ export default function Bingo(props) {
     playBingo();
   };
 
+  // Ehsan
+  async function saveBingoBoard(board) {
+    try {
+      const response = await fetch('/api/bingoBoard', {
+        method: 'POST',
+        body: JSON.stringify(board)
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error saving bingo board', error);
+      return null;
+    }
+  }
+
   useEffect(() => {
-    if (board && checkBingo(board)) {
-      // saveBingoBoard(composeBingoBoardObject(board));  // Saving completed bingoboard to database // NOT working
-      toast("Bingo!", { className: "bingo-toast" });
+    // commented out by Ehsan
+    // if (board && checkBingo(board)) {
+    //   toast("Bingo!", { className: "bingo-toast" });
+    // }
+    async function handleBingo() {
+      if (board && checkBingo(board)) {
+        incrementXP(1); //Grants the user 500 XP
+        toast("Bingo!", { className: "bingo-toast" });
+        //Ehsan
+        await saveBingoBoard(board);
+      }
     }
   }, [board]);
 
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
-    // console.log("Rendering square:", column);
+    //console.log("Rendering square:", column);
 
     return (
       <td
@@ -235,11 +282,6 @@ export default function Bingo(props) {
   //     </td>
   //   );
   // };
-
-
-
-
-
 
   const renderRow = (row, rowIndex) => {
     return (
@@ -300,6 +342,7 @@ export default function Bingo(props) {
         <title>BingoFit</title>
       </Head>
       <Grid item xs={12} lg={12}>
+        <UserXP xp={xp} email={props.user.email} />
         <Card>
           <CardContent>
             <div className={styles.container}>
@@ -346,4 +389,17 @@ export default function Bingo(props) {
       </Grid>
     </Grid>
   );
+}
+
+//Gets the infor for a user from the params
+export async function getServerSideProps({ params }) {
+  const prisma = new PrismaClient()
+  const user = await prisma.user.findUnique({
+    where: {
+      id: parseInt(params.id)
+    },
+  })
+  return {
+    props: { user }
+  }
 }
