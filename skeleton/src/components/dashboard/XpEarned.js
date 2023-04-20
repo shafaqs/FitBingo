@@ -39,7 +39,7 @@ const XpEarned = (props) => {
         </Grid>
         <Grid item style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h1 style={{ margin: 0 }}> {experiencePoints} </h1>
-          <p style={{ color: "#999", opacity: 0.7, margin: 0 }}>XP Earned</p>
+          <p style={{ color: "#999", opacity: 0.7, margin: 1, fontSize: "0.8rem" }}>All Points Earned</p>
         </Grid>
       </Grid>
     </BaseCard>

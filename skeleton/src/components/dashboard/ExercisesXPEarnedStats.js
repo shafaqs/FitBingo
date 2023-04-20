@@ -14,7 +14,7 @@ const ExercisesXPEarnedStats = (props) => {
       const response = await fetch(`/api/calMonthlyXP?userId=${userID}`);
       const { experiencePoints } = await response.json();
       const experiencePointsArray = Object.values(experiencePoints);
-      setExperiencePoints(experiencePointsArray); // ✅
+      setExperiencePoints(experiencePointsArray); 
     };
     calMonthlyXP();
   }, [userID]);
@@ -93,18 +93,21 @@ const ExercisesXPEarnedStats = (props) => {
     yaxis: [{
       show: true,
       min: 0,
-      max: 10,
-      tickAmount: 5,
+      max: 20,
+      tickAmount: 2,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
         },
       },
+      title: {
+        text: "Number of Exercises Completed"
+      }
     },
     {
       show: true,
       min: 0,
-      max: 800,
+      max: 1800,
       tickAmount: 10,
       opposite: true,
       labels: {
@@ -112,6 +115,9 @@ const ExercisesXPEarnedStats = (props) => {
           cssClass: "grey--text lighten-2--text fill-color",
         },
       },
+      title: {
+        text: "Experience Points Earned"
+      }
     },
   ],
     stroke: {

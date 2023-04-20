@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
-import { checkBingo } from '@/modules/bingoHelpers';
+import { composeBingoBoardObject, checkBingo } from '@/modules/bingoHelpers';
 import { Grid, Card, CardContent } from "@mui/material";
 import Head from 'next/head';
 import UserXP from '@/components/UserXP';
@@ -195,8 +195,11 @@ export default function Bingo(props) {
     incrementXP(null) //Grants the user 100 XP
     setModalVisible(false);
     if (!selectedSquare) return;
+    console.log('selectedSquare', selectedSquare)
     setBoard((prevBoard) => {
       const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
+      
+      // updateBingoSquare(); // update square iscomleted in database // NOT working
 
       // Check if the selectedSquare's row and column are defined
       if (
@@ -249,8 +252,8 @@ export default function Bingo(props) {
         await saveBingoBoard(board);
       }
     }
-    handleBingo();
   }, [board]);
+
 
 
   const renderSquare = (column, columnIndex, rowIndex) => {
@@ -297,6 +300,41 @@ export default function Bingo(props) {
       };
     })
   );
+  ////////////////////////////////////////////////////////////////
+  ////////////save bingo board and squares to db //////////////////
+  //////////////////// NOT WORKING ////////////////////////////
+//   async function saveBingoBoard(boardObject) {
+//     try {
+//       const response = await fetch('/api/bingoBoard', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//           userId: 1, // replace with the user ID of the current user
+//           isCompleted: false
+//         }),
+//       });
+//       const data = await response.json();
+//       //await saveBingoSquares(data.id)
+//       return data;
+//     } catch (error) {
+//       console.error('Error saving bingo board', error);
+//       return null;
+//   }
+// }
+
+// async function updateBingoSquare(id) {
+//   try {
+//     const response = await fetch(`/api/bingoSquare`, {
+//       method: 'PUT',
+//       body: JSON.stringify({
+//         isCompleted: true
+//       })
+//     })
+//     const data = await response.json()
+
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
 
   return (
     <Grid container spacing={0}>

@@ -7,55 +7,38 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import BaseCard from "../baseCard/BaseCard";
+import { useState, useEffect } from "react";
 
-const activities = [
-  {
-    day: "Mon",
-    color: "success.main",
-    text: "Meeting with John",
-  },
-  {
-    day: "Tue",
-    color: "secondary.main",
-    text: "Payment received from John Doe of $385.90",
-  },
-  {
-    day: "Wed",
-    color: "primary.main",
-    text: "Project Meeting",
-  },
-  {
-    day: "Thu",
-    color: "warning.main",
-    text: "New Sale recorded #ML-3467",
-  },
-  {
-    day: "Fri",
-    color: "error.main",
-    text: "Payment was made of $64.95 to Michael Anderson",
-  },
-  {
-    day: "Sat",
-    color: "success.main",
-    text: "Payment was made of $64.95 to Michael Anderson",
-  },
-  {
-    day: "Sun",
-    color: "secondary.main",
-    text: "Payment was made of $64.95 to Michael Anderson",
-  },
-];
+const MotivationQuotes = () => {
+  const [quotes, setQuotes] = useState([
+    {
+      day: "",
+      color: "secondary.main",
+      text: "",
+    },
+  ]);
 
-const DailyActivity = () => {
+  useEffect(() => {
+    fetch("https://type.fit/api/quotes")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        let randomIndex = Math.floor(Math.random() * 1000);
+        setQuotes((prevState) => [
+          {
+            ...prevState[0],
+            text: data[randomIndex].text,
+          },
+        ]);
+      });
+  }, []);
+
   return (
-    <BaseCard title="Daily Activity">
-      <Timeline
-        sx={{
-          p: 0,
-        }}
-      >
-        {activities.map((activity) => (
-          <TimelineItem key={activity.day}>
+    <BaseCard title="✌️ Motto of the Day 😊">
+      <Timeline sx={{ p: 0 }}>
+        {quotes.map((quote) => (
+          <TimelineItem key={quote.day}>
             <TimelineOppositeContent
               sx={{
                 fontSize: "12px",
@@ -63,13 +46,13 @@ const DailyActivity = () => {
                 flex: "0",
               }}
             >
-              {activity.day}
+              {quote.day}
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot
                 variant="outlined"
                 sx={{
-                  borderColor: activity.color,
+                  borderColor: quote.color,
                 }}
               />
               <TimelineConnector />
@@ -80,7 +63,7 @@ const DailyActivity = () => {
                 fontSize: "14px",
               }}
             >
-              {activity.text}
+              {quote.text}
             </TimelineContent>
           </TimelineItem>
         ))}
@@ -89,4 +72,4 @@ const DailyActivity = () => {
   );
 };
 
-export default DailyActivity;
+export default MotivationQuotes;
