@@ -85,14 +85,15 @@ export default function Bingo(props) {
     }
     updateBoard();
   }, []);
+
   useEffect(() => {
     if (board && checkBingo(board)) {
       setShowPlayAgain(true);
     }
   }, [board]);
-
   
-
+  // Calculate the user's current level based on the total experience points
+  const level = Math.floor(xp / 1000) + 1;
 
   function allExercisesCompleted(board) {
     const flattenedBoard = board.flat();
@@ -157,12 +158,11 @@ export default function Bingo(props) {
     //If the argument is null, +100XP, if not null, +500 for the completed bingo
     const xpAmount = bingo ? 500 : 100;
     const newXP = xp + xpAmount;
-    console.log("bingo is: " + bingo + ". set xp is: " + newXP)
+
     //Initatiates an PUT request to the api
     const updateResponse = await fetch(`/api/getUserXP`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      
       body: JSON.stringify({ experience_points: newXP, userId: router.query.id, }),
     });
 
@@ -194,6 +194,7 @@ export default function Bingo(props) {
   const handleCompleted = () => {
     incrementXP(null) //Grants the user 100 XP
     setModalVisible(false);
+    
     if (!selectedSquare) return;
     console.log('selectedSquare', selectedSquare)
     setBoard((prevBoard) => {
@@ -240,18 +241,18 @@ export default function Bingo(props) {
   }
 
   useEffect(() => {
-    // commented out by Ehsan
-    // if (board && checkBingo(board)) {
-    //   toast("Bingo!", { className: "bingo-toast" });
-    // }
-    async function handleBingo() {
-      if (board && checkBingo(board)) {
-        incrementXP(1); //Grants the user 500 XP
-        toast("Bingo!", { className: "bingo-toast" });
-        //Ehsan
-        await saveBingoBoard(board);
-      }
+    if (board && checkBingo(board)) {
+      incrementXP(true); //Grants the user 500 XP
+      toast("Bingo!", { className: "bingo-toast" });
     }
+    // async function handleBingo() {
+    //   if (board && checkBingo(board)) {
+    //     incrementXP(true); //Grants the user 500 XP
+    //     toast("Bingo!", { className: "bingo-toast" });
+    //     //Ehsan
+    //     await saveBingoBoard(board);
+    //   }
+    // }
   }, [board]);
 
 
@@ -342,7 +343,11 @@ export default function Bingo(props) {
         <title>BingoFit</title>
       </Head>
       <Grid item xs={12} lg={12}>
-        <UserXP xp={xp} email={props.user.email} />
+        <UserXP 
+          xp={xp} 
+          email={props.user.email} 
+          level={level}
+        />
         <Card>
           <CardContent>
             <div className={styles.container}>
