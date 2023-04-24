@@ -1,21 +1,20 @@
 import { React, useEffect, useState } from 'react';
+import Image from "next/image";
+import FeatherIcon from "feather-icons-react";
+
+
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from '@/components/CustomButton';
 import Modal from '@/components/Modal';
-import { Button } from "@mui/material";
+import { Button, IconButton, Fab, ButtonGroup } from "@mui/material";
 
 
 import { getRandomExercises, shuffleArray } from '@/modules/bingo';
-import { composeBingoBoardObject, checkBingo } from '@/modules/bingoHelpers';
+import { checkBingo } from '@/modules/bingoHelpers';
 
-import styles from "../../../styles/Home.module.css";
-import LogoImage from "../../../assets/images/logos/Logo_fix.png";
+import styles from '../styles/Home.module.css';
+import LogoImage from "../assets/images/logos/Logo_fix.png";
 
-import { Grid, Card, CardContent } from "@mui/material";
-import Head from 'next/head';
-import UserXP from '@/components/UserXP';
-import { useRouter } from 'next/router';
-import { PrismaClient } from '@prisma/client';
 
 const BOARD_SIZE = 5;
 
@@ -46,7 +45,7 @@ async function generateBingoBoard() {
       }
       rows.push(row);
     }
-    console.log('rows', rows);
+
     return rows;
   } catch (error) {
     console.error('Error fetching exercises', error);
@@ -82,16 +81,13 @@ export default function Bingo(props) {
   const [exercise, setExercise] = useState('');
   const [timer, setTimer] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [xp, setXP] = useState(props.user.experience_points);
-
-  const router = useRouter();
 
   useEffect(() => {
     async function updateBoard() {
       if (!board) {
-        setBoard(getDefaultBoard());
+        setBoard(getDefaultBoard(props));
       } else {
-        const newBoard = await generateBingoBoard();
+        const newBoard = await generateBingoBoard(props);
         setBoard(newBoard);
       }
     }
@@ -100,10 +96,10 @@ export default function Bingo(props) {
 
   useEffect(() => {
     if (board && checkBingo(board)) {
-      toast("Bingo!", { className: "bingo-toast" });
       setShowPlayAgain(true);
     }
   }, [board]);
+  
   useEffect(() => {
     let timerInterval;
 
@@ -119,17 +115,8 @@ export default function Bingo(props) {
       clearInterval(timerInterval);
     };
   }, [timerRunning]);
-  const startTimer = () => {
-    setTimerRunning(true);
-  };
-
-  const stopTimer = () => {
-    setTimerRunning(false);
-  };
 
 
-  // Calculate the user's current level based on the total experience points
-  const level = Math.floor(xp / 1000) + 1;
 
   function allExercisesCompleted(board) {
     const flattenedBoard = board.flat();
@@ -162,7 +149,7 @@ export default function Bingo(props) {
         index !== BOARD_SIZE * Math.floor(BOARD_SIZE / 2) + Math.floor(BOARD_SIZE / 2)
     );
 
-
+    console.log("Available squares:", availableSquares);
 
     const randomIndex = Math.floor(Math.random() * availableSquares.length);
     const randomSquare = availableSquares[randomIndex];
@@ -181,31 +168,11 @@ export default function Bingo(props) {
           return col;
         })
       );
-      console.log('newBoard', newBoard);
       return newBoard;
     });
 
     setSelectedSquare(randomSquare);
   };
-
-  //Gives +100 XP when a user completes an exercise, or 500 upon a bingo
-  async function incrementXP(bingo) {
-
-    //If the argument is null, +100XP, if not null, +500 for the completed bingo
-    const xpAmount = bingo ? 500 : 100;
-    const newXP = xp + xpAmount;
-
-    //Initatiates an PUT request to the api
-    const updateResponse = await fetch(`/api/getUserXP`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ experience_points: newXP, userId: router.query.id, }),
-    });
-
-    if (updateResponse.ok) {
-      setXP(newXP);
-    }
-  }
 
   //Requests API to fetch a random exercise displayed on the square
   const handleButtonClick = async () => {
@@ -218,25 +185,25 @@ export default function Bingo(props) {
 
 
   const handleExerciseClick = (rowIndex, columnIndex) => {
-    handleButtonClick();
-    const clickedSquare = board[rowIndex][columnIndex];
 
+
+    handleButtonClick();
+
+    const clickedSquare = board[rowIndex][columnIndex];
     if (!clickedSquare.highlighted) return;
 
     setSelectedSquare(clickedSquare);
     setModalVisible(true);
     setTimer(0);
+
   };
 
   const handleCompleted = () => {
-    incrementXP(null); //Grants the user 100 XP
     setModalVisible(false);
     setTimerRunning(false);
-    setTimer(0);
     if (!selectedSquare) return;
-    console.log('selectedSquare', selectedSquare);
     setBoard((prevBoard) => {
-      const newBoard = JSON.parse(JSON.stringify(prevBoard)); // 
+      const newBoard = JSON.parse(JSON.stringify(prevBoard)); // Create a deep copy
 
       // Check if the selectedSquare's row and column are defined
       if (
@@ -252,15 +219,33 @@ export default function Bingo(props) {
 
     setSelectedSquare(null);
   };
+
+
+
+
   const handleChooseAnother = () => {
     setModalVisible(false);
     setTimerRunning(false);
-    setTimer(0);
     playBingo();
   };
 
+  useEffect(() => {
+    if (board && checkBingo(board)) {
+      toast("Bingo!", { className: "bingo-toast" });
+    }
+  }, [board]);
+
+  const startTimer = () => {
+    setTimerRunning(true);
+  };
+
+  const stopTimer = () => {
+    setTimerRunning(false);
+  };
 
   const renderSquare = (column, columnIndex, rowIndex) => {
+    console.log("Rendering square:", column);
+
     const isMiddleSquare = rowIndex === Math.floor(BOARD_SIZE / 2) && columnIndex === Math.floor(BOARD_SIZE / 2);
 
     return (
@@ -270,9 +255,11 @@ export default function Bingo(props) {
         onClick={() => handleExerciseClick(rowIndex, columnIndex)}
       >
         {column.completed ? '✓' : isMiddleSquare ? <div className={styles.logoContainer}></div> : column.name}
+
       </td>
     );
   };
+
 
 
   const renderRow = (row, rowIndex) => {
@@ -294,101 +281,60 @@ export default function Bingo(props) {
   );
 
   return (
-    <Grid container spacing={0}>
-      <Head>
-        <title>BingoFit</title>
-      </Head>
-      <Grid item xs={12} lg={12}>
-        <UserXP
-          xp={xp}
-          email={props.user.email}
-          level={level}
-        />
-        <Card>
-          <CardContent>
-            <div className={styles.container}>
-              <div className={styles.boardContainer}>
-                <table className={styles.board}>
-                  <tbody>
-                    {/* Render each row and column of the bingo board */}
-                    {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
-                  </tbody>
-                </table>
-                {!showPlayAgain && (
-                  <CustomButton sx={{ marginTop: "50px" }} onClick={playBingo}>
-                    Play Bingo
-                  </CustomButton>
-                )}
+    <div className={styles.container}>
+      <div className={styles.boardContainer}>
+        <table className={styles.board}>
+          <tbody>
+            {/* Render each row and column of the bingo board */}
+            {board ? board.map(renderRow) : defaultBoard.map(renderRow)}
+          </tbody>
+        </table>
+        {!showPlayAgain && (
+          <CustomButton color="primary" sx={{ marginTop: "50px" }} onClick={playBingo}>
+            Play Bingo
+          </CustomButton>
+        )}
 
 
-                {/* Add the "Play Again" button */}
-                {showPlayAgain && (
-                  <CustomButton sx={{ marginTop: "10px" }} onClick={resetBoard}>
-                    Play Again
-                  </CustomButton>
-                )}
-              </div>
+        {/* Add the "Play Again" button */}
+        {showPlayAgain && (
+          <Button color="success" sx={{ marginTop: "10px" }} onClick={resetBoard}>
+            Play Again
+          </Button>
+        )}
+      </div>
 
-              {selectedSquare && (
-                <Modal visible={modalVisible}>
-                  <div>
-                    <h2>{selectedSquare.name}</h2>
-                    <div className="modal-section">
-                      <h3>Exercise Category:</h3>
-                      <p>{exercise[0]}</p>
-                    </div>
-                    <div className="modal-section">
-                      <h3>Title:</h3>
-                      <p>{exercise[1]}</p>
-                    </div>
-                    <div className="modal-section">
-                      <h3>Instructions:</h3>
-                      <p>{exercise[2]}</p>
-                    </div>
-                    <div className="modal-section">
-                      <h3>Estimated Time:</h3>
-                      <p>{exercise[3]} minutes</p>
-                    </div>
-                    <p>
-                      Time: {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
-                    </p>
-                    <div>
-                      <CustomButton color="primary" onClick={startTimer}>
-                        Start Timer
-                      </CustomButton>
-                      <CustomButton color="secondary" onClick={stopTimer}>
-                        Stop Timer
-                      </CustomButton>
-                    </div>
-                    <div>
-                      <Button color="success" onClick={handleCompleted}>
-                        Completed
-                      </Button>
-                      <Button color="secondary" onClick={handleChooseAnother}>
-                        Choose Another
-                      </Button>
-                    </div>
-                  </div>
-                </Modal>
-              )}
-              <ToastContainer />
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+      {selectedSquare && (
+        <Modal visible={modalVisible}>
+          <h2>{selectedSquare.name}</h2>
+          {/* API response returns "exercise" array. [0]=category, [1]=title, [2]=description, [3]=duration */}
+          Exercise Category: {exercise[0]} <br />
+          Title: {exercise[1]} <br />
+          Instructions: {exercise[2]} <br />
+          Estimated Time: {exercise[3]} minutes
+          <p>
+            Time: {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
+          </p>
+          <div>
+            <CustomButton color="primary" onClick={startTimer}>
+              <FeatherIcon icon="clock" width="20" height="20" />
+            </CustomButton>
+            <CustomButton color="secondary" onClick={stopTimer}>
+              <FeatherIcon icon="x-circle" />
+            </CustomButton>
+
+          </div>
+          <div>
+            <Button color="success" onClick={handleCompleted}>
+              Completed
+            </Button>
+            <Button color="secondary" onClick={handleChooseAnother}>
+              Choose Another
+            </Button>
+          </div>
+        </Modal>
+      )}
+      <ToastContainer />
+    </div>
   );
-}
-
-//Gets the infor for a user from the params
-export async function getServerSideProps({ params }) {
-  const prisma = new PrismaClient();
-  const user = await prisma.user.findUnique({
-    where: {
-      id: parseInt(params.id)
-    },
-  });
-  return {
-    props: { user }
-  };
 }

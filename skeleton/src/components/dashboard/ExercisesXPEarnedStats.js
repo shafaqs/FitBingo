@@ -3,8 +3,26 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import dynamic from "next/dynamic";
 import BaseCard from "../baseCard/BaseCard";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useEffect, useState } from "react";
 
-const ExercisesXPEarnedStats = () => {
+const ExercisesXPEarnedStats = (props) => {
+  const [experiencePoints, setExperiencePoints] = useState([]);
+  const userID = props.user.id; 
+
+  useEffect(() => {
+    async function calMonthlyXP () {
+      const response = await fetch(`/api/calMonthlyXP?userId=${userID}`);
+      const { experiencePoints } = await response.json();
+      const experiencePointsArray = Object.values(experiencePoints);
+      setExperiencePoints(experiencePointsArray); 
+    };
+    calMonthlyXP();
+  }, [userID]);
+
+  const monthlyExercises = experiencePoints.map(i => i / 100);
+
+
+
   const optionssalesoverview = {
     grid: {
       show: true,
@@ -72,17 +90,36 @@ const ExercisesXPEarnedStats = () => {
         },
       },
     },
-    yaxis: {
+    yaxis: [{
       show: true,
-      min: 100,
-      max: 400,
-      tickAmount: 3,
+      min: 0,
+      max: 20,
+      tickAmount: 2,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
         },
       },
+      title: {
+        text: "Number of Exercises Completed"
+      }
     },
+    {
+      show: true,
+      min: 0,
+      max: 1800,
+      tickAmount: 10,
+      opposite: true,
+      labels: {
+        style: {
+          cssClass: "grey--text lighten-2--text fill-color",
+        },
+      },
+      title: {
+        text: "Experience Points Earned"
+      }
+    },
+  ],
     stroke: {
       show: true,
       width: 5,
@@ -96,11 +133,11 @@ const ExercisesXPEarnedStats = () => {
   const seriessalesoverview = [
     {
       name: "Total Exercises",
-      data: [355, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
+      data: monthlyExercises,
     },
     {
       name: "XP Earned",
-      data: [280, 250, 325, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+      data: experiencePoints,
     },
   ];
   return (
