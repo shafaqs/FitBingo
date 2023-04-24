@@ -30,4 +30,23 @@ function checkBingo(board) {
   return false;
 }
 
+export function composeBingoBoardObject(board, userId) {
+  const squares = board
+    .flat()
+    .map((square) => ({
+      exerciseName: square.name,
+      rowIndex: square.rowIndex,
+      columnIndex: square.columnIndex,
+      clicked: square.clicked,
+    }));
+
+  const bingoBoardObject = {
+    userId: userId,
+    bingoBoardSquares: squares,
+  };
+
+  return bingoBoardObject;
+}
+
+
 export { checkBingo };
