@@ -6,9 +6,8 @@ import { PrismaClient } from '@prisma/client';
 import CompletedBingos from "@/src/components/dashboard/CompletedBingos";
 import CompletedExercises from "@/src/components/dashboard/CompletedExercises";
 import CurrentTemperature from "@/src/components/dashboard/CurrentTemperature";
-import CurrentWeight from "@/src/components/dashboard/CurrentWeight";
-import PreviousWeight from "@/src/components/dashboard/PreviousWeight";
 import ExercisesPerDayStats from "@/src/components/dashboard/ExercisesPerDayStats";
+import MotivationQuotes from "@/src/components/dashboard/MotivationQuotes";
 
 export default function UserPage({ user }) {
   return ( 
@@ -38,8 +37,7 @@ export default function UserPage({ user }) {
       </Grid>
       <Grid item xs={4} lg={4}>
         <CurrentTemperature/>
-        <CurrentWeight/>
-        <PreviousWeight/>
+        <MotivationQuotes />
       </Grid>
       <Grid item xs={4} lg={4}>
         
