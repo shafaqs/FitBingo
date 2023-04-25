@@ -55,7 +55,6 @@ const options = {
 };
 
 const ExercisesPerDayStats = (props) => {
-  console.log('ExercisesPerDayStats', props)
   const [data, setData] = useState([]);
   const userID = props.user.id;
 
