@@ -15,7 +15,13 @@ export default async function calculateXP(req, res) {
 
     const pointsPerSquare = 100;
 
-    const totalXP = completedSquares * pointsPerSquare;
+    const completedBoards = await prisma.bingo_Board.count({
+        where: { isCompleted: true, userId: parseInt(userId) },
+      });
+
+    const pointsPerBoard = 500;
+
+    const totalXP = completedSquares * pointsPerSquare + completedBoards * pointsPerBoard;
 
     res.status(200).json({ experiencePoints: totalXP });
 
