@@ -10,10 +10,10 @@ export default function Progress() {
       id: 1,
       squares: [
         ["Cardio", "Strength", "Cardio", "Strength", "Cardio"],
-        ["Cardio", "Calisthetics", "Cardio", "Strength", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Strength", "Strength"],
         ["Cardio", "Strength", "Free Space", "Cardio", "Strength"],
-        ["Cardio", "Calisthetics", "Strength", "Cardio", "Strength"],
-        ["Cardio", "Cardio", "Calisthetics", "Cardio", "Strength"]
+        ["Cardio", "Cardio", "Strength", "Cardio", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Cardio", "Strength"]
       ],
       completed: true
     },
@@ -21,10 +21,10 @@ export default function Progress() {
       id: 2,
       squares: [
         ["Cardio", "Strength", "Cardio", "Strength", "Cardio"],
-        ["Cardio", "Calisthetics", "Cardio", "Strength", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Strength", "Strength"],
         ["Cardio", "Strength", "Free Space", "Cardio", "Strength"],
-        ["Cardio", "Calisthetics", "Strength", "Cardio", "Strength"],
-        ["Cardio", "Cardio", "Calisthetics", "Cardio", "Strength"]
+        ["Cardio", "Cardio", "Strength", "Cardio", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Cardio", "Strength"]
       ],
       completed: true
     },
@@ -32,10 +32,10 @@ export default function Progress() {
       id: 3,
       squares: [
         ["Cardio", "Strength", "Cardio", "Strength", "Cardio"],
-        ["Cardio", "Calisthetics", "Cardio", "Strength", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Strength", "Strength"],
         ["Cardio", "Strength", "Free Space", "Cardio", "Strength"],
-        ["Cardio", "Calisthetics", "Strength", "Cardio", "Strength"],
-        ["Cardio", "Cardio", "Calisthetics", "Cardio", "Strength"]
+        ["Cardio", "Cardio", "Strength", "Cardio", "Strength"],
+        ["Cardio", "Cardio", "Cardio", "Cardio", "Strength"]
       ],
       completed: true
     }
