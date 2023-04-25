@@ -10,7 +10,7 @@ export default function UserXP(props) {
 
   return (
     <div>
-      <BaseCard title={props.email}>
+      <BaseCard >
         Level {level}
         <div className={styles.progressBar}>
           <div className={styles.progressFill} style={{ width: `${progress}%` }}>
