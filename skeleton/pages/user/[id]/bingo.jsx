@@ -100,6 +100,7 @@ export default function Bingo(props) {
 
   useEffect(() => {
     if (board && checkBingo(board)) {
+      incrementXP(true) //Add 500xp upon bingo
       toast("Bingo!", { className: "bingo-toast" });
       setShowPlayAgain(true);
     }

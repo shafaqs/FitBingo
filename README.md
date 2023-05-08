@@ -1,33 +1,28 @@
-# NextJS-and-Prisma-Skeleton-JS
+# Bingo Fit
+
+A gamified fitness app, using the style of a popular traditional game in western culture - Bingo!
 
 ## Getting started
 
+### Installing dependencies
 ```
 cd skeleton
 npm i
-```
-
-## Getting started with prisma
-
-In your skeleton file, create a `.env` file. In side of that file add
 
 ```
-DATABASE_URL="file:./dev.db"
+
+### Seed the database
+```
+npx prisma db seed
+
 ```
 
-This is needed in order for prisma to work on your local.
-
-Should you decide to use an upload database (So this will be a DB hosted only and shared between members) Please read the prisma docs and add accordingly
-
-
-To launch prisma studio:
+### Edit the database
 ```
-cd skeleton
 npx prisma studio
 ```
 
-To seed database:
-```
-cd skeleton
-npx prisma db seed
-```
+## Description & screenshots
+
+Easy to read, modular homepage pertaining information about the user
+!["Homepage"](/assets/images/readme/Homepage.png)
